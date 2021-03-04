@@ -1,4 +1,4 @@
-package ru.naumen.ekbcitytreemap.controllers;
+package ru.naumen.ectmapi.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

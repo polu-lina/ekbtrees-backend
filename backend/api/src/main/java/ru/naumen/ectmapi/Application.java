@@ -1,4 +1,4 @@
-package ru.naumen.ekbcitytreemap;
+package ru.naumen.ectmapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

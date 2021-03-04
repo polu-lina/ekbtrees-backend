@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.naumen</groupId>
-    <artifactId>ectm-api</artifactId>
+    <artifactId>ectm-auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ectm-api</name>
-    <description>EKBCityTreeMap api service</description>
+    <name>ectm-auth</name>
+    <description>EKBCityTreeMap authentication service</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -21,16 +21,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-<!--        Эту зависимость стоит подключать когда начнете разбираться с авторизацией -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -42,14 +40,14 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-<!-- Зависимость ниже требует настройки локального инстанса Postgres -->
-<!-- На время разработки можно пользоваться зависимостью выше - H2DB (это in-memory СУБД) -->
+        <!-- Зависимость ниже требует настройки локального инстанса Postgres -->
+        <!-- На время разработки можно пользоваться зависимостью выше - H2DB (это in-memory СУБД) -->
 
-<!--        <dependency>-->
-<!--            <groupId>org.postgresql</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.postgresql</groupId>-->
+        <!--            <artifactId>postgresql</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
