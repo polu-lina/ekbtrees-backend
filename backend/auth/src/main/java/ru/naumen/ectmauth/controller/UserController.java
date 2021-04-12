@@ -1,5 +1,7 @@
 package ru.naumen.ectmauth.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -32,7 +34,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestBody User login) throws ServletException {
+    public ArrayList<String> login(@RequestBody User login) throws ServletException {
 
         String jwtToken = "";
 
@@ -55,10 +57,26 @@ public class UserController {
             throw new ServletException("Invalid login. Please check your name and password.");
         }
 
-        jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
+       /* jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 
-        return jwtToken;
+        return jwtToken;*/
+       return getNewTokens(email);
+    }
+
+    @RequestMapping(value = "/getNewTokens", method = RequestMethod.POST)
+    public ArrayList<String> getNewTokens(String email){
+        String jwtTokenAccess = "";
+        String jwtTokenRefresh = "";
+
+        jwtTokenAccess = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+
+        jwtTokenRefresh = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+
+        return new ArrayList<>(Arrays.asList(jwtTokenAccess,jwtTokenRefresh));
+
     }
 
 
