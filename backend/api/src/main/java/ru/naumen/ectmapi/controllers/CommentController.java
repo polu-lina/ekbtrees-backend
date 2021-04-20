@@ -11,6 +11,7 @@ import ru.naumen.ectmapi.dto.СommentDto;
 import ru.naumen.ectmapi.entity.Comment;
 import ru.naumen.ectmapi.service.CommentService;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "api/comment", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,10 +23,10 @@ public class CommentController {
     @Operation(summary = "Сохраняет комментарий")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/save")
-    public void save(СommentDto commentDto){
+    public void save(@RequestBody СommentDto commentDto){
         commentService.save(commentConverter.fromDto(commentDto));
     }
-
+  
     @Operation(summary = "Предоставляет комментарий по id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/get/{id}")

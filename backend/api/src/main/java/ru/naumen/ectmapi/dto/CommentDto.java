@@ -10,7 +10,7 @@ import java.util.UUID;
 @Schema(description = "Транспортная сущность комментария")
 @Data
 @AllArgsConstructor
-public class СommentDto {
+public class CommentDto {
 
     @Schema(description = "Идентификатор комментария")
     private Long id;
