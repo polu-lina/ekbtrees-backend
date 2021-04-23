@@ -15,6 +15,7 @@
     <description>EKBCityTreeMap api service</description>
     <properties>
         <java.version>11</java.version>
+        <openapi.version>1.5.5</openapi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -59,6 +60,16 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${openapi.version}</version>
         </dependency>
     </dependencies>
 
