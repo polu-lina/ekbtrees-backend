@@ -85,7 +85,7 @@ public class UserController {
 
     @PostMapping("/newToken")
     @ResponseBody
-    public ResponseEntity newToken(@RequestBody(required = false) Map<String, String> json) {
+    public ResponseEntity newToken(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) {
         if (json == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -104,12 +104,15 @@ public class UserController {
         if (user == null || refreshToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (validRefreshTokens.contains(refreshToken)) {
+            Cookie cookie_access_token = new Cookie("access_token", "access_token");
+            response.addCookie( cookie_access_token);
             validRefreshTokens.remove(refreshToken);
 
             return ok(createNewTokens(user));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
     }
 
     private Map<String, String> createNewTokens(String email) {
