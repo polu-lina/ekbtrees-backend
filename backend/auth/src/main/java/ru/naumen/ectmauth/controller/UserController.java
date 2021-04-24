@@ -53,11 +53,16 @@ public class UserController {
         return userService.save(hashedUser);
     }
 
-    // @RequestMapping(value = "/login", method = RequestMethod.POST , HttpServletResponse resp)
+    // @RequestMapping(value = "/login", method = RequestMethod.POST )
     // public Map<String, Object> login(@RequestBody User login) throws ServletException {
-    @GetMapping("/login") //login?user=st@mail.ru&password=12er
-    public void login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
+    @PostMapping("/login")
+    @ResponseBody
+    public void login(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
+        //  @GetMapping("/login") //login?user=st@mail.ru&password=12er
+        //  public void login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
 
+        String email = json.get("email");
+        String password = json.get("password");
         if (email == null || password == null) { //если ничего не введено
             throw new ServletException("Please fill in username and password");
         }
@@ -85,9 +90,10 @@ public class UserController {
 
     @PostMapping("/newToken")
     @ResponseBody
-    public ResponseEntity newToken(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) {
+    public void newToken(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) {
         if (json == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+          //  return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         String user;
@@ -102,15 +108,23 @@ public class UserController {
         }
 
         if (user == null || refreshToken == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            response.setStatus(HttpStatus.FORBIDDEN.value());
         } else if (validRefreshTokens.contains(refreshToken)) {
-            Cookie cookie_access_token = new Cookie("access_token", "access_token");
-            response.addCookie( cookie_access_token);
+            //Cookie cookie_access_token = new Cookie("access_token", "access_token");
+            //response.addCookie( cookie_access_token);
             validRefreshTokens.remove(refreshToken);
+            Map<String, String> tokens = createNewTokens(user);
+            Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
+            response.addCookie(cookie_access_token);
+            Cookie cookie_refresh_token = new Cookie("refresh_token", tokens.get("refresh_token"));
+            response.addCookie(cookie_refresh_token);
+            response.setStatus(HttpStatus.OK.value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            return ok(createNewTokens(user));
+           // return ok(createNewTokens(user));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+           // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
     }
