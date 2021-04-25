@@ -81,11 +81,12 @@ public class UserController {
 
         Map<String, String> tokens = createNewTokens(email);
         Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
+        cookie_access_token.setHttpOnly(true);
         response.addCookie(cookie_access_token);
         Cookie cookie_refresh_token = new Cookie("refresh_token", tokens.get("refresh_token"));
+        cookie_refresh_token.setHttpOnly(true);
         response.addCookie(cookie_refresh_token);
-        response.setStatus(HttpStatus.OK.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
     }
 
     @PostMapping("/newToken")
@@ -115,11 +116,12 @@ public class UserController {
             validRefreshTokens.remove(refreshToken);
             Map<String, String> tokens = createNewTokens(user);
             Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
+            cookie_access_token.setHttpOnly(true);
             response.addCookie(cookie_access_token);
             Cookie cookie_refresh_token = new Cookie("refresh_token", tokens.get("refresh_token"));
+            cookie_refresh_token.setHttpOnly(true);
             response.addCookie(cookie_refresh_token);
-            response.setStatus(HttpStatus.OK.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
 
            // return ok(createNewTokens(user));
         } else {
