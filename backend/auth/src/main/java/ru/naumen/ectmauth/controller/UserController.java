@@ -1,18 +1,14 @@
 package ru.naumen.ectmauth.controller;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ru.naumen.ectmauth.HashingAssignment;
@@ -24,9 +20,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
-import static org.springframework.http.ResponseEntity.ok;
 
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
@@ -53,23 +47,19 @@ public class UserController {
         return userService.save(hashedUser);
     }
 
-    // @RequestMapping(value = "/login", method = RequestMethod.POST )
-    // public Map<String, Object> login(@RequestBody User login) throws ServletException {
     @PostMapping("/login")
     @ResponseBody
     public void login(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
-        //  @GetMapping("/login") //login?user=st@mail.ru&password=12er
-        //  public void login(@RequestParam("email") String email, @RequestParam("password") String password, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
 
         String email = json.get("email");
         String password = json.get("password");
-        if (email == null || password == null) { //если ничего не введено
+        if (email == null || password == null) {
             throw new ServletException("Please fill in username and password");
         }
 
         User user = userService.findByEmail(email);
 
-        if (user == null) { // если пользователь не найден
+        if (user == null) {
             throw new ServletException("User email not found.");
         }
 
@@ -94,7 +84,7 @@ public class UserController {
     public void newToken(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) {
         if (json == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-          //  return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         }
 
         String user;
@@ -111,8 +101,6 @@ public class UserController {
         if (user == null || refreshToken == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
         } else if (validRefreshTokens.contains(refreshToken)) {
-            //Cookie cookie_access_token = new Cookie("access_token", "access_token");
-            //response.addCookie( cookie_access_token);
             validRefreshTokens.remove(refreshToken);
             Map<String, String> tokens = createNewTokens(user);
             Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
@@ -123,10 +111,10 @@ public class UserController {
             response.addCookie(cookie_refresh_token);
 
 
-           // return ok(createNewTokens(user));
+
         } else {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-           // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         }
 
     }
@@ -154,31 +142,5 @@ public class UserController {
                 .signWith(SignatureAlgorithm.HS256, JWT_PASSWORD).compact();
     }
 
- /* @RequestMapping(value = "/getNewTokens", method = RequestMethod.POST)
-    public ArrayList<String> getNewTokens(String email){
-        String jwtTokenAccess = "";
-        String jwtTokenRefresh = "";
 
-        jwtTokenAccess = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
-                .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
-
-        jwtTokenRefresh = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
-                .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
-
-        return new ArrayList<>(Arrays.asList(jwtTokenAccess,jwtTokenRefresh));
-    }*/
- /*   @RequestMapping("/hello")
-    public String deleteProduct() {
-        return "hello";
-    }
-
-    @RequestMapping(value = "/user/email", method = RequestMethod.POST)
-    public User findByEmail(@RequestBody User user) {
-        return userService.findByEmail(user.getEmail());
-    }
-
-    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
-    public User updateUser(@RequestBody User user) {
-        return userService.save(user);
-    }*/
 }
