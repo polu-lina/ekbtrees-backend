@@ -16,7 +16,7 @@ public class FileDescription {
     @GeneratedValue
     private UUID id;
 
-    @Column(name = "MIME_type")
+    @Column(name = "mime_type")
     private String mimeType;
 
     @Column(name = "size")
@@ -25,7 +25,7 @@ public class FileDescription {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "authorCode")
+    @Column(name = "author_code")
     private String authorCode;
 
 }
