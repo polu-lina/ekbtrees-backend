@@ -4,8 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.UUID;
-import java.awt.Color;
+import java.awt.*;
 
 @Schema(description = "Транспортная сущность породы дерева")
 @Data

@@ -3,14 +3,11 @@ package ru.naumen.ectmapi.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.sql.Time;
 import java.time.Instant;
-import java.util.UUID;
 
 @Schema
 @Data
