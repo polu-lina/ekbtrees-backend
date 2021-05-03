@@ -1,7 +1,6 @@
 package ru.naumen.ectmauth.controller;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
 import java.util.*;
 
 import javax.servlet.ServletException;
@@ -12,11 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import ru.naumen.ectmauth.HashingAssignment;
-import ru.naumen.ectmauth.user.Role;
-import ru.naumen.ectmauth.user.User;
-import ru.naumen.ectmauth.user.UserServiceImpl;
-
-import org.apache.commons.lang3.RandomStringUtils;
+import ru.naumen.ectmauth.jwtGenerator.JWTService;
+import ru.naumen.ectmauth.token.TokenService;
+import ru.naumen.ectmauth.user.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -24,13 +21,18 @@ import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private JWTService jwtService;
+
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
-    private static final List<String> validRefreshTokens = new ArrayList<>();
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -43,6 +45,7 @@ public class UserController {
         String hashedPassword = HashingAssignment.getHash(user.getPassword(), "SHA-256");
         User hashedUser = user;
         hashedUser.setPassword(hashedPassword);
+        hashedUser.setProvider(Provider.LOCAL);
 
         return userService.save(hashedUser);
     }
@@ -69,7 +72,8 @@ public class UserController {
             throw new ServletException("Invalid login. Please check your name and password.");
         }
 
-        Map<String, String> tokens = createNewTokens(email);
+        Map<String, String> tokens = jwtService.createNewTokens(user.getUser_id(), email, user.getFirstName(), user.getLastName(), user.getProvider());
+
         Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
         cookie_access_token.setHttpOnly(true);
         response.addCookie(cookie_access_token);
@@ -87,60 +91,40 @@ public class UserController {
 
         }
 
-        String user;
+        String email;
         String refreshToken;
         try {
             Jwt<Header, Claims> jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parse(json.get("access_token"));
-            user = (String) jwt.getBody().get("email");
+            email = (String) jwt.getBody().get("email");
             refreshToken = json.get("refresh_token");
         } catch (ExpiredJwtException e) {
-            user = (String) e.getClaims().get("email");
+            email = (String) e.getClaims().get("email");
             refreshToken = json.get("refresh_token");
         }
 
-        if (user == null || refreshToken == null) {
+        if (email == null || refreshToken == null) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
-        } else if (validRefreshTokens.contains(refreshToken)) {
-            validRefreshTokens.remove(refreshToken);
-            Map<String, String> tokens = createNewTokens(user);
-            Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
-            cookie_access_token.setHttpOnly(true);
-            response.addCookie(cookie_access_token);
-            Cookie cookie_refresh_token = new Cookie("refresh_token", tokens.get("refresh_token"));
-            cookie_refresh_token.setHttpOnly(true);
-            response.addCookie(cookie_refresh_token);
+        }
+        else {
+            String finalRefreshToken = refreshToken;
+            User user = userService.findByEmail(email);
+            if (user.getTokens().stream().anyMatch(t -> t.getRefresh_token().equals(finalRefreshToken))) {
+                tokenService.delete(user.getTokens().stream().filter(t -> t.getRefresh_token().equals(finalRefreshToken)).findFirst().get());
+                Map<String, String> tokens = jwtService.createNewTokens(user.getUser_id(), email, user.getFirstName(), user.getLastName(), user.getProvider());
+                Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
+                cookie_access_token.setHttpOnly(true);
+                response.addCookie(cookie_access_token);
+                Cookie cookie_refresh_token = new Cookie("refresh_token", tokens.get("refresh_token"));
+                cookie_refresh_token.setHttpOnly(true);
+                response.addCookie(cookie_refresh_token);
 
 
+            } else {
+                response.setStatus(HttpStatus.FORBIDDEN.value());
 
-        } else {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-
+            }
         }
 
     }
-
-    private Map<String, String> createNewTokens(String email) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("admin", "false");
-        claims.put("email", email);
-        String token = getSecretToken(email);//jwt builder
-        Map<String, String> tokenJson = new HashMap<>();
-        String refreshToken = RandomStringUtils.randomAlphabetic(20);
-        validRefreshTokens.add(refreshToken);
-        tokenJson.put("access_token", token);
-        tokenJson.put("refresh_token", refreshToken);
-        return tokenJson;
-    }
-
-    private String getSecretToken(String email) {
-        return Jwts.builder()
-                .setIssuer("Auth Server Ekb Trees")
-                .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(Date.from(Instant.now().plusSeconds(100000)))
-                .claim("email", email)
-                .claim("Role", userService.findByEmail(email).getRoles().stream().map(Role::getName).toArray(String[]::new))
-                .signWith(SignatureAlgorithm.HS256, JWT_PASSWORD).compact();
-    }
-
 
 }

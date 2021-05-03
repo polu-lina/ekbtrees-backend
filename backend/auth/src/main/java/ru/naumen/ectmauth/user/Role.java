@@ -11,6 +11,7 @@ public class Role {
     private Integer id;
 
     private String name;
+
     public Integer getId() {
         return id;
     }
@@ -26,5 +27,4 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
-// remaining getters and setters
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
+import ru.naumen.ectmauth.token.Token;
 
 @Entity
 @Table(name="users")
@@ -15,32 +16,49 @@ public class User {
     @Id
     @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long user_id;
     @CreationTimestamp
     private Date created;
     private String email;
     private String firstName;
     private String lastName;
     private String password;
-    private Integer phone;
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+    private boolean enabled;
+    private Integer vk_id;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<Role> roles = new HashSet<>();
-    @Enumerated(EnumType.STRING)
-    private Provider provider;
-    private boolean enabled;
 
-    public Long getUserId() {
-        return userId;
+
+
+   @OneToMany(mappedBy = "user")
+    private Set<Token> tokens =new HashSet<Token>();
+
+    public Set<Token> getTokens() {
+        return tokens;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setTokens(Set<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
     }
 
     public String getFirstName() {
@@ -75,10 +93,10 @@ public class User {
         this.password = password;
     }
 
-    public Integer getPhone() {
+    public String  getPhone() {
         return phone;
     }
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -113,4 +131,8 @@ public class User {
     public void setProvider(Provider provider) {
         this.provider = provider;
     }
+
+    public Integer getVk_id() { return vk_id; }
+
+    public void setVk_id(Integer vk_id) { this.vk_id = vk_id; }
 }
