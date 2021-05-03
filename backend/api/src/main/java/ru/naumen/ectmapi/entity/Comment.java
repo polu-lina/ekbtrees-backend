@@ -17,7 +17,7 @@ public class Comment {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "created_comment")
+    @Column(name = "creation_date")
     private Instant created;
 
     @Column(name = "author_id")

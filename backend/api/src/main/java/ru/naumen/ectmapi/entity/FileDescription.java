@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.UUID;
 
 @Entity(name = "file_description")
 @Data
@@ -14,18 +13,21 @@ public class FileDescription {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
-    @Column(name = "MIME_type")
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "mime_type")
     private String mimeType;
 
     @Column(name = "size")
     private Long size;
 
-    @Column(name = "location")
-    private String location;
+    @Column(name = "uri")
+    private String uri;
 
-    @Column(name = "authorCode")
-    private String authorCode;
+    @Column(name = "hash")
+    private String hash;
 
 }

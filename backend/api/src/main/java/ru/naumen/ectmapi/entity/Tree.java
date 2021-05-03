@@ -34,28 +34,28 @@ public class Tree {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "treeHeight")
+    @Column(name = "tree_height")
     private Double treeHeight;
 
-    @Column(name = "numberOfTreeTrunks")
+    @Column(name = "number_of_tree_trunks")
     private int numberOfTreeTrunks;
 
-    @Column(name = "trunkGirth")
+    @Column(name = "trunk_girth")
     private Double trunkGirth;
 
-    @Column(name = "diameterOfCrown")
+    @Column(name = "diameter_of_crown")
     private Double diameterOfCrown;
 
-    @Column(name = "heightOfTheFirstBranch")
+    @Column(name = "height_of_the_first_branch")
     private Double heightOfTheFirstBranch;
 
-    @Column(name = "conditionAssessment")
+    @Column(name = "condition_assessment")
     private int conditionAssessment;
 
     @Column(name = "age")
     private int age;
 
-    @Column(name = "treePlantingType")
+    @Column(name = "tree_plantingType")
     private String treePlantingType;
 
     @Column(name = "created")
@@ -64,7 +64,7 @@ public class Tree {
     @Column(name = "updated")
     private Instant updated;
 
-    @Column(name = "authorId")
+    @Column(name = "author_id")
     private Long authorId;
 
     @Column(name = "status")

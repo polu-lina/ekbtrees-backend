@@ -2,20 +2,17 @@ package ru.naumen.ectmapi.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.naumen.ectmapi.converter.TreeConverter;
 import ru.naumen.ectmapi.dto.TreeDto;
-import ru.naumen.ectmapi.entity.Tree;
 import ru.naumen.ectmapi.service.TreeService;
-
-import javax.validation.Valid;
 
 
 @RestController
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @RequestMapping(value = "api/tree", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TreeController {
 

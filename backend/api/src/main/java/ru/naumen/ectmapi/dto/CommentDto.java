@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Schema(description = "Транспортная сущность комментария")
 @Data

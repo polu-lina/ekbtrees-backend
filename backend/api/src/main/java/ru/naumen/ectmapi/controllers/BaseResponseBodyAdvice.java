@@ -1,5 +1,7 @@
 package ru.naumen.ectmapi.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import java.util.Objects;
 
 @RestControllerAdvice
 public class BaseResponseBodyAdvice extends ResponseEntityExceptionHandler implements ResponseBodyAdvice<Object> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseResponseBodyAdvice.class);
 
     @Override
     public boolean supports(MethodParameter returnType,
@@ -51,6 +55,7 @@ public class BaseResponseBodyAdvice extends ResponseEntityExceptionHandler imple
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
         return super.handleExceptionInternal(ex, new BaseErrorDto(ex.getMessage()), headers, status, request);
     }
 }
