@@ -18,6 +18,7 @@ import java.util.UUID;
 public class TreeDto {
 
     @Schema(description = "Идентификатор дерева")
+    @NotNull
     private Long id;
 
     @Schema(description = "Широта")
