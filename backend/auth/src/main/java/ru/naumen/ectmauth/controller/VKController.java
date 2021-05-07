@@ -8,6 +8,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.responses.GetResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.naumen.ectmauth.jwtGenerator.JWTService;
@@ -48,6 +49,7 @@ public class VKController {
 
     }
 
+    @Operation(summary = "Авторизоваться через Вконтакте")
     @PostMapping("/authorize")
     @ResponseBody
     public void authorize(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) throws IOException {

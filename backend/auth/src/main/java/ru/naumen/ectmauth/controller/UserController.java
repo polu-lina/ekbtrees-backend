@@ -6,6 +6,11 @@ import java.util.*;
 import javax.servlet.ServletException;
 
 import io.jsonwebtoken.*;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.Example;
+import io.swagger.annotations.ExampleProperty;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +40,7 @@ public class UserController {
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
 
 
+    @Operation(summary = "Ожидает почту и пароль, чтоб создать нового пользователя")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public User registerUser(@RequestBody User user) throws ServletException, NoSuchAlgorithmException {
 
@@ -50,6 +56,10 @@ public class UserController {
         return userService.save(hashedUser);
     }
 
+
+
+
+    @Operation(summary = "Ожидает почту и пароль пользователя, чтоб войти и получить токены")
     @PostMapping("/login")
     @ResponseBody
     public void login(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
@@ -83,6 +93,7 @@ public class UserController {
 
     }
 
+    @Operation(summary = "Выдает новые токены в куки")
     @PostMapping("/newToken")
     @ResponseBody
     public void newToken(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) {
