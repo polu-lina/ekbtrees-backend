@@ -15,20 +15,11 @@ import java.time.Instant;
 public class TreeDto {
 
     @Schema(description = "Идентификатор дерева")
-    @NotNull
     private Long id;
 
-    @Schema(description = "Широта")
+    @Schema(description = "Местоположение дерева в географической системе координат")
     @NotNull
-    @Min(-90)
-    @Max(90)
-    private Double latitude;
-
-    @Schema(description = "Долгота")
-    @NotNull
-    @Min(-180)
-    @Max(180)
-    private Double longitude;
+    private GeographicalPointDto geographicalPoint;
 
     @Schema(description = "Порода дерева")
     private String type;
@@ -37,7 +28,7 @@ public class TreeDto {
     private Double treeHeight;
 
     @Schema(description = "Число стволов (целое)")
-    private int numberOfTreeTrunks;
+    private Integer numberOfTreeTrunks;
 
     @Schema(description = "Обхват (самого толстого) ствола в сантиметрах")
     private Double trunkGirth;
@@ -49,10 +40,10 @@ public class TreeDto {
     private Double heightOfTheFirstBranch;
 
     @Schema(description = "Визуальная оценка состояния (по шкале 1 до 5)")
-    private int conditionAssessment;
+    private Integer conditionAssessment;
 
     @Schema(description = "Возраст в годах")
-    private int age;
+    private Integer age;
 
     @Schema(description = "Тип посадки дерева")
     private String treePlantingType;
@@ -69,7 +60,4 @@ public class TreeDto {
     @Schema(description = "Статус дерева")
     private String status;
 
-    public TreeDto() {
-
-    }
 }

@@ -1,72 +1,82 @@
 package ru.naumen.ectmapi.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.postgis.Point;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
-@Entity(name = "tree")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Tree {
+public class Tree extends Entity<Long> {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    /**
+     * Местоположение дерева в географической системе координат
+     */
+    private Point geographicalPoint;
 
-    @Column(name = "latitude")
-    @NotNull
-    @Min(-90)
-    @Max(90)
-    private Double latitude;
-
-    @Column(name = "longitude")
-    @NotNull
-    @Min(-180)
-    @Max(180)
-    private Double longitude;
-
-    @Column(name = "type")
+    /**
+     * Порода дерева
+     */
     private String type;
 
-    @Column(name = "tree_height")
+    /**
+     * Высота дерева в метрах
+     */
     private Double treeHeight;
 
-    @Column(name = "number_of_tree_trunks")
-    private int numberOfTreeTrunks;
+    /**
+     * Число стволов
+     */
+    private Integer numberTreeTrunks;
 
-    @Column(name = "trunk_girth")
+    /**
+     * Обхват (самого толстого) ствола в сантиметрах
+     */
     private Double trunkGirth;
 
-    @Column(name = "diameter_of_crown")
-    private Double diameterOfCrown;
+    /**
+     * Диаметр кроны в метрах
+     */
+    private Double diameterCrown;
 
-    @Column(name = "height_of_the_first_branch")
-    private Double heightOfTheFirstBranch;
+    /**
+     * Высота первой ветви от земли в метрах
+     */
+    private Double heightFirstBranch;
 
-    @Column(name = "condition_assessment")
-    private int conditionAssessment;
+    /**
+     * Визуальная оценка состояния (по шкале 1 до 5)
+     */
+    private Integer conditionAssessment;
 
-    @Column(name = "age")
-    private int age;
+    /**
+     * Возраст в годах
+     */
+    private Integer age;
 
-    @Column(name = "tree_plantingType")
+    /**
+     * Тип посадки дерева
+     */
     private String treePlantingType;
 
-    @Column(name = "created")
+    /**
+     * Дата и время добавления записи
+     */
     private Instant created;
 
-    @Column(name = "updated")
+    /**
+     * Дата и время последнего редактирования информации о дереве
+     */
     private Instant updated;
 
-    @Column(name = "author_id")
+    /**
+     * Ссылка на автора
+     */
     private Long authorId;
 
-    @Column(name = "status")
+    /**
+     * Статус дерева
+     */
     private String status;
 }

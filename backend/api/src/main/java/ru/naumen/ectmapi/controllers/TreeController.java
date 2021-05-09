@@ -22,7 +22,7 @@ public class TreeController {
     @Operation(summary = "Сохраняет дерево")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/save")
-    public void save(TreeDto treeDto){
+    public void save(@RequestBody TreeDto treeDto){
         treeService.save(treeConverter.fromDto(treeDto));
     }
 

@@ -10,11 +10,8 @@ public class TreeMapInfoDto {
     @Schema(description = "Идентификатор дерева")
     private Long id;
 
-    @Schema(description = "Широта")
-    private Double latitude;
-
-    @Schema(description = "Долгота")
-    private Double longitude;
+    @Schema(description = "Местоположение дерева в географической системе координат")
+    private GeographicalPointDto geographicalPoint;
 
     @Schema(description = "Диаметр кроны")
     private Double diameterOfCrown;

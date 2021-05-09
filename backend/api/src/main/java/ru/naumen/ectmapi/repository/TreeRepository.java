@@ -1,9 +1,19 @@
 package ru.naumen.ectmapi.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import ru.naumen.ectmapi.entity.Tree;
 
-@Repository
-public interface TreeRepository extends JpaRepository<Tree, Long> {
+@Mapper
+public interface TreeRepository {
+
+    void create(@Param("tree") Tree tree);
+
+    void update(@Param("tree") Tree tree);
+
+    Tree find(@Param("id") Long id);
+
+    void delete(@Param("id") Long id);
+
+    boolean isExists(@Param("id") Long id);
 }
