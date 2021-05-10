@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.naumen.ectmapi.entity.FileDescription;
-import ru.naumen.ectmapi.repository.FileRepository;
+import ru.naumen.ectmapi.repository.FileDescriptionRepository;
 import ru.naumen.ectmapi.service.exception.FileServiceException;
 
 import javax.xml.bind.DatatypeConverter;
@@ -25,25 +25,27 @@ public class FileService {
 
     private static final String BUCKET = "ectm";
 
-    private final FileRepository fileRepository;
+    private final FileDescriptionRepository fileDescriptionRepository;
     private final AmazonS3 s3;
 
     public FileDescription save(MultipartFile file) {
-        return fileRepository.save(saveToS3(file));
+        FileDescription fileDescription = saveToS3(file);
+        fileDescriptionRepository.create(fileDescription);
+        return fileDescription;
     }
 
     public FileDescription get(Long id) {
-        return fileRepository.getOne(id);
+        return fileDescriptionRepository.find(id);
     }
 
     public void delete(Long id) {
-        FileDescription fileToDelete = fileRepository.getOne(id);
+        FileDescription fileToDelete = fileDescriptionRepository.find(id);
 
-        if (fileRepository.countByHash(fileToDelete.getHash()) == 1) {
+        if (fileDescriptionRepository.countByHash(fileToDelete.getHash()) == 1) {
             deleteFromS3(fileToDelete);
         }
 
-        fileRepository.deleteById(id);
+        fileDescriptionRepository.delete(id);
     }
 
     private FileDescription saveToS3(MultipartFile file) {
@@ -64,7 +66,7 @@ public class FileService {
                     DigestUtils.md5Digest(FileUtils.readFileToByteArray(tempFile))
             ).toUpperCase();
 
-            FileDescription sameHashFile = fileRepository.getFirstByHash(hash);
+            FileDescription sameHashFile = fileDescriptionRepository.findFirstByHash(hash);
 
             if (sameHashFile == null) {
 

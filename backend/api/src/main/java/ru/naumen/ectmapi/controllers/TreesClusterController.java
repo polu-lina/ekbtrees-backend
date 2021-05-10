@@ -6,24 +6,24 @@ import org.postgis.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.naumen.ectmapi.converter.TreeMapInfoConverter;
-import ru.naumen.ectmapi.dto.TreeMapInfoDto;
-import ru.naumen.ectmapi.service.TreeMapInfoService;
+import ru.naumen.ectmapi.converter.TreesClusterConverter;
+import ru.naumen.ectmapi.dto.TreesClusterDto;
+import ru.naumen.ectmapi.service.TreesClusterService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/tree-map-info", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/trees-cluster", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class TreeMapInfoController {
+public class TreesClusterController {
 
-    private final TreeMapInfoService treeMapInfoService;
-    private final TreeMapInfoConverter treeMapInfoConverter;
+    private final TreesClusterService treesClusterService;
+    private final TreesClusterConverter treesClusterConverter;
 
-    @Operation(summary = "Предоставляет информацию о деревьях, входящих в указаную область")
+    @Operation(summary = "Предоставляет информацию о кластерах деревьев, входящих в указаную область")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/get-in-region")
-    public List<TreeMapInfoDto> getInRegion(
+    public List<TreesClusterDto> getInRegion(
             @RequestParam("x1") double topLeftLatitude,
             @RequestParam("y1") double topLeftLongitude,
             @RequestParam("x2") double bottomRightLatitude,
@@ -31,7 +31,6 @@ public class TreeMapInfoController {
     ) {
         Point topLeftPoint = new Point(topLeftLatitude, topLeftLongitude);
         Point bottomRightPoint = new Point(bottomRightLatitude, bottomRightLongitude);
-        return treeMapInfoConverter.toDto(treeMapInfoService.getInRegion(topLeftPoint, bottomRightPoint));
+        return treesClusterConverter.toDto(treesClusterService.getInRegion(topLeftPoint, bottomRightPoint));
     }
 }
-
