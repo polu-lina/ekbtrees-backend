@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "s3.host",
+      "type": "java.lang.String",
+      "description": "Хост S3 сервиса."
+    },
+    {
+      "name": "s3.region",
+      "type": "java.lang.String",
+      "description": "Регион S3 сервиса."
+    },
+    {
+      "name": "s3.access-key-id",
+      "type": "java.lang.String",
+      "description": "Идентификатор в S3 сервисе."
+    },
+    {
+      "name": "s3.secret-access-key",
+      "type": "java.lang.String",
+      "description": "Секретный ключ в S3 сервисе."
+    }
+  ]
+}
