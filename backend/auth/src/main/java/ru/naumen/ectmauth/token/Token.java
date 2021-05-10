@@ -1,6 +1,7 @@
 package ru.naumen.ectmauth.token;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import ru.naumen.ectmauth.user.Role;
 import ru.naumen.ectmauth.user.User;
@@ -22,11 +23,21 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long token_id;
     @CreationTimestamp
+    @Schema(description = "Дата создания токенов")
     private Date created;
 
     @ManyToOne()
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Schema(description = "refresh_token пользователя для приложения EkbTreeMap")
+    private String refresh_token;
+    @Schema(description = "access_token пользователя для приложения EkbTreeMap")
+    private String access_token;
+    @Schema(description = "access_token пользователя для Вконтакте")
+    private String access_token_VK;
+
 
     public Long getToken_id() {
         return token_id;
@@ -76,9 +87,6 @@ public class Token {
         this.access_token_VK = access_token_VK;
     }
 
-    private String refresh_token;
-    private String access_token;
-    private String access_token_VK;
 
 
 }

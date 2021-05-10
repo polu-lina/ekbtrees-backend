@@ -31,7 +31,7 @@ import java.util.Set;
 @RequestMapping("/auth/vk")
 public class VKController {
 
-    private final String clientSecret = "AAtOVTeUf8tDAf1HX4gd";
+    private final String clientSecret = "YuEnNKOALQGcwNHyBXMG";
     private final int clientId = 7835777;
     private final String host = "localhost";
     private final Integer port = 8080;

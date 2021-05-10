@@ -1,5 +1,7 @@
 package ru.naumen.ectmauth.user;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Schema(description = "Провайдер", example = "VK")
     private String name;
 
     public Integer getId() {
