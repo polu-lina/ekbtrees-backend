@@ -31,7 +31,7 @@ import java.util.Set;
 @RequestMapping("/auth/vk")
 public class VKController {
 
-    private final String clientSecret = "N8BemovEaCQgFBMvQRRq";
+    private final String clientSecret = "AAtOVTeUf8tDAf1HX4gd";
     private final int clientId = 7835777;
     private final String host = "localhost";
     private final Integer port = 8080;
@@ -96,12 +96,10 @@ public class VKController {
     }
 
     private String getRedirectUri() {
-        return String.format("http://%s:%d", host, port) + "/callback";
+        return String.format("http://%s:%d", host, port) + "/auth/vk/callback";
     }
 
-    private String getInfoPage(GetResponse user) {
-        return "Hello <a href='https://vk.com/id" + user.getId() + "'>" + user.getFirstName() + "</a>";
-    }
+
 
     private User createNewUser(Integer user_vk_id, String token) {
 
