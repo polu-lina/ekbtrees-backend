@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import ru.naumen.ectmauth.token.Token;
 
@@ -16,20 +17,31 @@ public class User {
     @Id
     @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long user_id;
     @CreationTimestamp
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Дата создания пользователя")
     private Date created;
+    @Schema(description = "Почта", example = "naumen@mail.ru")
     private String email;
+    @Schema(description = "Имя", example = "Иван")
     private String firstName;
+    @Schema(description = "Фамилия", example = "Иванов")
     private String lastName;
+    @Schema(description = "Пароль", example = "p1a2s3s4w5o6r7d")
     private String password;
+    @Schema(description = "Телефон", example = "+79222298897")
     private String phone;
 
     @Enumerated(EnumType.STRING)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Провайдер", example = "VK")
     private Provider provider;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private boolean enabled;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Идентификатор пользователя Вконтакте")
     private Integer vk_id;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -38,10 +50,9 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-
-
-   @OneToMany(mappedBy = "user")
-    private Set<Token> tokens =new HashSet<Token>();
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @OneToMany(mappedBy = "user")
+    private Set<Token> tokens = new HashSet<Token>();
 
     public Set<Token> getTokens() {
         return tokens;

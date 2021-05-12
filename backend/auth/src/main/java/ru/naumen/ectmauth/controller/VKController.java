@@ -8,6 +8,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.responses.GetResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ import java.util.Set;
 @RequestMapping("/auth/vk")
 public class VKController {
 
-    private final String clientSecret = "N8BemovEaCQgFBMvQRRq";
+    private final String clientSecret = "YuEnNKOALQGcwNHyBXMG";
     private final int clientId = 7835777;
     private final String host = "localhost";
     private final Integer port = 8080;
@@ -60,6 +61,7 @@ public class VKController {
 
     }
 
+    @Hidden
     @GetMapping("/callback")
     public void callback(@RequestParam("code") String code, HttpServletResponse response) throws ServletException, ClientException, ApiException, IOException {
 
@@ -96,12 +98,10 @@ public class VKController {
     }
 
     private String getRedirectUri() {
-        return String.format("http://%s:%d", host, port) + "/callback";
+        return String.format("http://%s:%d", host, port) + "/auth/vk/callback";
     }
 
-    private String getInfoPage(GetResponse user) {
-        return "Hello <a href='https://vk.com/id" + user.getId() + "'>" + user.getFirstName() + "</a>";
-    }
+
 
     private User createNewUser(Integer user_vk_id, String token) {
 
