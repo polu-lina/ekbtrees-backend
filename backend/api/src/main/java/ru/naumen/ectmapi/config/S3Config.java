@@ -23,6 +23,7 @@ public class S3Config {
                 .withEndpointConfiguration(
                         new AwsClientBuilder.EndpointConfiguration(host, region)
                 )
+                .withPathStyleAccessEnabled(true)
                 .withCredentials(
                         new AWSStaticCredentialsProvider(
                                 new BasicAWSCredentials(accessKeyId, secretAccessKey)
