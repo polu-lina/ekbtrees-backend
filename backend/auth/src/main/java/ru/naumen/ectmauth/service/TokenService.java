@@ -1,9 +1,9 @@
-package ru.naumen.ectmauth.token;
+package ru.naumen.ectmauth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.naumen.ectmauth.token.Token;
-import ru.naumen.ectmauth.token.TokenRepository;
+import ru.naumen.ectmauth.entity.Token;
+import ru.naumen.ectmauth.repository.TokenRepository;
 
 @Service
 public class TokenService {

@@ -1,13 +1,13 @@
-package ru.naumen.ectmauth.jwtGenerator;
+package ru.naumen.ectmauth.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.naumen.ectmauth.token.Token;
-import ru.naumen.ectmauth.token.TokenService;
-import ru.naumen.ectmauth.user.*;
+import ru.naumen.ectmauth.entity.Provider;
+import ru.naumen.ectmauth.entity.Role;
+import ru.naumen.ectmauth.entity.Token;
 
 import java.time.Instant;
 import java.util.Calendar;

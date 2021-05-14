@@ -11,18 +11,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import ru.naumen.ectmauth.HashingAssignment;
-import ru.naumen.ectmauth.jwtGenerator.JWTService;
-import ru.naumen.ectmauth.token.TokenService;
-import ru.naumen.ectmauth.user.*;
+import ru.naumen.ectmauth.utils.HashingAssignment;
+import ru.naumen.ectmauth.entity.Provider;
+import ru.naumen.ectmauth.entity.User;
+import ru.naumen.ectmauth.service.JWTService;
+import ru.naumen.ectmauth.service.TokenService;
+import ru.naumen.ectmauth.service.UserServiceImpl;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
 @Api(value = "UserController", produces = "application/json")
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
