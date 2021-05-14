@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  api:
+    image: donkeyhott/ectm-api:latest
+    environment:
+      DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
+      S3_HOST: "http://s3:9090"
+    ports:
+    - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_started
+      s3:
+        condition: service_started
+
+  postgres:
+    image: postgis/postgis:12-3.0-alpine
+    environment:
+      POSTGRES_DB: "ectm"
+      POSTGRES_USER: "ectm"
+      POSTGRES_PASSWORD: "ectm"
+    ports:
+      - "${DB_PORT:-54325}:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  s3:
+    image: adobe/s3mock:2.1.29
+    environment:
+      initialBuckets: "ectm"
+    ports:
+    - "9090:9090"
+    - "9191:9191"
+
+volumes:
+  dbdata:
