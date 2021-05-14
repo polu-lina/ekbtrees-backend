@@ -39,7 +39,11 @@ public class User {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private boolean enabled;
     @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Идентификатор пользователя Вконтакте")
-    private Integer vk_id;
+    private String vk_id;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Идентификатор пользователя Вконтакте")
+    private String fb_id;
+
+
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -143,7 +147,11 @@ public class User {
         this.provider = provider;
     }
 
-    public Integer getVk_id() { return vk_id; }
+    public String getVk_id() { return vk_id; }
 
-    public void setVk_id(Integer vk_id) { this.vk_id = vk_id; }
+    public void setVk_id(String vk_id) { this.vk_id = vk_id; }
+
+    public String getFb_id() { return fb_id; }
+
+    public void setFb_id(String fb_id) { this.fb_id = fb_id; }
 }

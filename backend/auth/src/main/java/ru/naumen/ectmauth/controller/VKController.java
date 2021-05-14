@@ -27,15 +27,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost", maxAge = 3600)
+
 @RestController
 @RequestMapping("/auth/vk")
 public class VKController {
 
-    private final String clientSecret = "YuEnNKOALQGcwNHyBXMG";
-    private final int clientId = 7835777;
-    private final String host = "localhost";
-    private final Integer port = 8080;
+    private final String clientSecret = System.getenv("VK_APP_SECRET_KEY");
+    private final int clientId = Integer.parseInt(System.getenv("VK_APP_ID"));
+
+    private final String host = System.getenv("HOST");
+    private final Integer port = Integer.valueOf(System.getenv("PORT"));
 
     @Autowired
     private UserServiceImpl userService;
@@ -51,7 +52,7 @@ public class VKController {
     }
 
     @Operation(summary = "Авторизоваться через Вконтакте")
-    @PostMapping("/authorize")
+    @GetMapping("/authorize")
     @ResponseBody
     public void authorize(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) throws IOException {
         System.out.println("мы в authorize");
@@ -64,16 +65,16 @@ public class VKController {
     @Hidden
     @GetMapping("/callback")
     public void callback(@RequestParam("code") String code, HttpServletResponse response) throws ServletException, ClientException, ApiException, IOException {
-
+        System.out.println("мы в callback");
         try {
 
             UserAuthResponse authResponse = vk.oAuth().userAuthorizationCodeFlow(clientId, clientSecret, getRedirectUri(), code).execute();
-            User user = userService.findByVk_id(authResponse.getUserId());
+            User user = userService.findByVk_id(String.valueOf(authResponse.getUserId()));
             if (user == null) {
                 user = createNewUser(authResponse.getUserId(), authResponse.getAccessToken());
             }
-            System.out.println(1);
-            Map<String, String> tokens = jwtService.createNewTokensWithVK(user.getUser_id(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getProvider(), authResponse.getAccessToken());
+            System.out.println(1+" callback_VK "+user.getFirstName()+" "+user.getLastName()+" "+user.getVk_id());
+            Map<String, String> tokens = jwtService.createNewTokensWithSocialNetwork(user.getUser_id(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getProvider(), authResponse.getAccessToken());
             Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
             cookie_access_token.setHttpOnly(true);
             response.addCookie(cookie_access_token);
@@ -117,7 +118,7 @@ public class VKController {
 
             user.setFirstName(userR.getFirstName());
             user.setLastName(userR.getLastName());
-            user.setVk_id(userR.getId());
+            user.setVk_id(String.valueOf(userR.getId()));
             user.setProvider(Provider.VK);
 
             Token t = new Token();

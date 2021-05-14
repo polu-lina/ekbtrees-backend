@@ -73,6 +73,9 @@ cmake-build-*/
 # File-based project format
 *.iws
 
+#env files
+**/*.env
+
 # IntelliJ
 out/
 
@@ -163,3 +166,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+#env files
+**/*.env

@@ -24,7 +24,7 @@ public class JWTService {
     private TokenService tokenService;
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
 
-    public Map<String, String> createNewTokensWithVK(Long id, String email, String first_name, String last_name, Provider provider,String access_token_vk){
+    public Map<String, String> createNewTokensWithSocialNetwork(Long id, String email, String first_name, String last_name, Provider provider, String access_token_vk_or_fb){
         Map<String, Object> claims = new HashMap<>();
         claims.put("admin", "false");
         claims.put("email", email);
@@ -35,7 +35,12 @@ public class JWTService {
         t.setRefresh_token(refreshToken);
         t.setUser(userService.findById(id));
         t.setAccess_token(accessToken);
-        t.setAccess_token_VK(access_token_vk);
+        if (provider == Provider.VK) {
+            t.setAccess_token_VK(access_token_vk_or_fb);
+        } else if (provider == Provider.FACEBOOK) {
+            t.setAccess_token_FB(access_token_vk_or_fb);
+        }
+
         tokenService.save(t);
         tokenJson.put("access_token", accessToken);
         tokenJson.put("refresh_token", refreshToken);
@@ -43,7 +48,7 @@ public class JWTService {
     }
 
     public Map<String, String> createNewTokens(Long id, String email, String first_name, String last_name, Provider provider) {
-        return createNewTokensWithVK(id,email,first_name,last_name,provider,null);
+        return createNewTokensWithSocialNetwork(id,email,first_name,last_name,provider,null);
     }
 
     private String getSecretToken( Long id,String email, String first_name, String last_name, Provider provider) {
