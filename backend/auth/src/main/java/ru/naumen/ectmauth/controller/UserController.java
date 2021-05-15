@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import io.jsonwebtoken.*;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,16 +28,14 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "UserController", produces = "application/json")
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @RequestMapping("/auth")
 public class UserController {
 
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private TokenService tokenService;
 
-    @Autowired
-    private JWTService jwtService;
+    private final UserServiceImpl userService;
+    private final TokenService tokenService;
+    private final JWTService jwtService;
 
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
 

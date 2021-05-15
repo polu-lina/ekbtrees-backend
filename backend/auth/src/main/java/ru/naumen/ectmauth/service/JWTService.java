@@ -2,6 +2,7 @@ package ru.naumen.ectmauth.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class JWTService {
 
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private TokenService tokenService;
+    private final UserServiceImpl userService;
+    private final TokenService tokenService;
+
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
 
     public Map<String, String> createNewTokensWithSocialNetwork(Long id, String email, String first_name, String last_name, Provider provider, String access_token_vk_or_fb){
