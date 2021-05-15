@@ -1,0 +1,14 @@
+{
+    "properties": [
+        {
+            "name": "social-network.vk-secret-key",
+            "type": "java.lang.String",
+            "description": "Ключ от VK API."
+        },
+        {
+            "name": "social-network.fb-secret-key",
+            "type": "java.lang.String",
+            "description": "Ключ от FB API."
+        }
+    ]
+}
