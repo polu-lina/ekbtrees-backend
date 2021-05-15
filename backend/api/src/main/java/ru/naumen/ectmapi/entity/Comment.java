@@ -1,31 +1,31 @@
 package ru.naumen.ectmapi.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.time.Instant;
 
-@Entity(name = "comment")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Comment {
+public class Comment extends Entity<Long> {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "creation_date")
+    /**
+     * Дата и время добавления комментария
+     */
     private Instant created;
 
-    @Column(name = "author_id")
+    /**
+     * Ссылка на автора
+     */
     private Long authorId;
 
-    @Column(name = "text")
+    /**
+     * Текст комментария
+     */
     private String text;
 
-    @Column(name = "tree_id")
+    /**
+     * Идентификатор дерева, к которому относиться комментарий
+     */
     private Long treeId;
 }

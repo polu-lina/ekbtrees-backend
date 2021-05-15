@@ -1,0 +1,61 @@
+
+name: UpdateProd
+
+on:
+  push:
+    branches: 
+    - master
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  update-api:
+
+    runs-on: ubuntu-latest
+
+    env:
+      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
+      DATASOURCE_LOGIN: ${{ secrets.DATASOURCE_LOGIN }}
+      DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
+      DDL_AUTO: 'none'
+      S3_HOST: ${{ secrets.S3_HOST }}
+      S3_REGION: ${{ secrets.S3_REGION }}
+      S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+      S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Tests and build
+        run: cd backend/api/scripts && ./buildImage.sh
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Push image
+        run: docker push donkeyhott/ectm-api:latest
+
+      - name: Pull and run image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            echo "DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}" >> prod.env
+            echo "DATASOURCE_LOGIN=${{ secrets.DATASOURCE_LOGIN }}" >> prod.env
+            echo "DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}" >> prod.env
+            echo "DDL_AUTO=none" >> prod.env
+            echo "S3_HOST=${{ secrets.S3_HOST }}" >> prod.env
+            echo "S3_REGION=${{ secrets.S3_REGION }}" >> prod.env
+            echo "S3_ACCESS_KEY_ID=${{ secrets.S3_ACCESS_KEY_ID }}" >> prod.env
+            echo "S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }}" >> prod.env
+            docker pull donkeyhott/ectm-api:latest
+            docker stop ectm-api
+            docker rm ectm-api
+            docker run -d -p 8080:8080 --name ectm-api --env-file ./prod.env donkeyhott/ectm-api

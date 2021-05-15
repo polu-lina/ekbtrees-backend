@@ -6,24 +6,25 @@ import java.util.*;
 import javax.servlet.ServletException;
 
 import io.jsonwebtoken.*;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.Example;
-import io.swagger.annotations.ExampleProperty;
+import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import ru.naumen.ectmauth.HashingAssignment;
-import ru.naumen.ectmauth.jwtGenerator.JWTService;
-import ru.naumen.ectmauth.token.TokenService;
-import ru.naumen.ectmauth.user.*;
+import ru.naumen.ectmauth.utils.HashingAssignment;
+import ru.naumen.ectmauth.entity.Provider;
+import ru.naumen.ectmauth.entity.User;
+import ru.naumen.ectmauth.service.JWTService;
+import ru.naumen.ectmauth.service.TokenService;
+import ru.naumen.ectmauth.service.UserServiceImpl;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+@Api(value = "UserController", produces = "application/json")
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
@@ -57,18 +58,29 @@ public class UserController {
     }
 
 
-
-
     @Operation(summary = "Ожидает почту и пароль пользователя, чтоб войти и получить токены")
     @PostMapping("/login")
     @ResponseBody
-    public void login(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
+    public void login( @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String headerStr, HttpServletRequest request, HttpServletResponse response) throws ServletException, NoSuchAlgorithmException {
 
-        String email = json.get("email");
+
+      /*  String encodedCredentials = request
+                .getHeader(HttpHeaders.AUTHORIZATION)
+                .replace("Basic ", "");*/
+        String encodedCredentials=headerStr.replace("Basic ", "");
+
+        String[] decodedCredentials = new String(Base64.getUrlDecoder().decode(encodedCredentials)).split(":");
+
+
+        String email = decodedCredentials[0];
+        String password = decodedCredentials[1];
+     /*   String email = json.get("email");
         String password = json.get("password");
         if (email == null || password == null) {
             throw new ServletException("Please fill in username and password");
-        }
+        }*/
+
+        System.out.println("Hello "+email+" "+password);
 
         User user = userService.findByEmail(email);
 
@@ -82,6 +94,7 @@ public class UserController {
             throw new ServletException("Invalid login. Please check your name and password.");
         }
 
+        System.out.println("Hello "+email+" "+user.getFirstName());
         Map<String, String> tokens = jwtService.createNewTokens(user.getUser_id(), email, user.getFirstName(), user.getLastName(), user.getProvider());
 
         Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
@@ -93,7 +106,7 @@ public class UserController {
 
     }
 
-    @Operation(summary = "Выдает новые токены в куки")
+   /* @Operation(summary = "Выдает новые токены в куки")
     @PostMapping("/newToken")
     @ResponseBody
     public void newToken(@RequestBody(required = false) Map<String, String> json, HttpServletResponse response) {
@@ -136,6 +149,55 @@ public class UserController {
             }
         }
 
+    }
+*/
+//@CookieValue(value = "refresh_token") String refresh_token_input
+    @Operation(summary = "Выдает новые токены в куки")
+    @PostMapping("/newToken")
+    @ResponseBody
+    @ApiModelProperty(
+            value = "A JSON value representing a transaction. An example of the expected schema can be found down here. The fields marked with an * means that they are required.",
+            example = "{foo: whatever, bar: whatever2}")
+    public void newToken(@CookieValue(value = "access_token",required = false) String access_token_input, @CookieValue(value = "refresh_token",required = false) String refresh_token_input,HttpServletResponse response) {
+
+  //      System.out.println("kek");
+
+   //     return ResponseEntity.ok().body(access_token_input+" \n"+refresh_token_input);
+
+
+        String email;
+        String refreshToken;
+        try {
+            Jwt<Header, Claims> jwt = Jwts.parser().setSigningKey(JWT_PASSWORD).parse(access_token_input);
+            email = (String) jwt.getBody().get("email");
+            refreshToken = refresh_token_input;
+        } catch (ExpiredJwtException e) {
+            email = (String) e.getClaims().get("email");
+            refreshToken = refresh_token_input;
+        }
+
+        if (email == null || refreshToken == null) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+        }
+        else {
+            String finalRefreshToken = refreshToken;
+            User user = userService.findByEmail(email);
+            if (user.getTokens().stream().anyMatch(t -> t.getRefresh_token().equals(finalRefreshToken))) {
+                tokenService.delete(user.getTokens().stream().filter(t -> t.getRefresh_token().equals(finalRefreshToken)).findFirst().get());
+                Map<String, String> tokens = jwtService.createNewTokens(user.getUser_id(), email, user.getFirstName(), user.getLastName(), user.getProvider());
+                Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
+                cookie_access_token.setHttpOnly(true);
+                response.addCookie(cookie_access_token);
+                Cookie cookie_refresh_token = new Cookie("refresh_token", tokens.get("refresh_token"));
+                cookie_refresh_token.setHttpOnly(true);
+                response.addCookie(cookie_refresh_token);
+
+
+            } else {
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+
+            }
+        }
     }
 
 }

@@ -13,12 +13,18 @@ public class TreeService {
     private final TreeRepository treeRepository;
 
     public void save(Tree tree){
-        treeRepository.save(tree);
+        if (tree.isNew()) {
+            treeRepository.create(tree);
+        } else {
+            treeRepository.update(tree);
+        }
     }
 
     public Tree get(Long id){
-        return treeRepository.findById(id).orElseThrow();
+        return treeRepository.find(id);
     }
 
-    public void delete(Long id) {treeRepository.deleteById(id);}
+    public void delete(Long id) {
+        treeRepository.delete(id);
+    }
 }

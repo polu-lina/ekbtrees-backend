@@ -1,33 +1,31 @@
 package ru.naumen.ectmapi.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity(name = "file_description")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class FileDescription {
+public class FileDescription extends Entity<Long> {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "title")
+    /**
+     * Название файла
+     */
     private String title;
 
-    @Column(name = "mime_type")
+    /**
+     * Тип файла
+     */
     private String mimeType;
 
-    @Column(name = "size")
+    /**
+     * Размер файла
+     */
     private Long size;
 
-    @Column(name = "uri")
+    /**
+     * Ссылка, переход по которой инициирует загрузку контента файла
+     */
     private String uri;
 
-    @Column(name = "hash")
     private String hash;
-
 }

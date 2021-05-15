@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import ru.naumen.ectmapi.dto.TreeDto;
 import ru.naumen.ectmapi.entity.Tree;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PointConverter.class)
 public interface TreeConverter {
 
     TreeDto toDto(Tree tree);

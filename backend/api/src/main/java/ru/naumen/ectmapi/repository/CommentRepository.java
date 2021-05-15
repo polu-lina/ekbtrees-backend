@@ -1,9 +1,15 @@
 package ru.naumen.ectmapi.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import ru.naumen.ectmapi.entity.Comment;
 
-@Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+@Mapper
+public interface CommentRepository {
+
+    void create(@Param("comment") Comment comment);
+
+    Comment find(@Param("id") Long id);
+
+    void delete(@Param("id") Long id);
 }
