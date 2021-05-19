@@ -8,4 +8,4 @@ export $(cat "$ENV_FILE" | xargs)
 
 cd ..
 
-mvn spring-boot:build-image
+mvn spring-boot:build-image -DskipTests
