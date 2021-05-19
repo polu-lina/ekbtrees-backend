@@ -18,7 +18,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
         ),
         servers = {
                 @Server(
-                        url = "https://ekb-trees-help.ru/api"
+                        url = "https://ekb-trees-help.ru/"
                 )
         }
 )
