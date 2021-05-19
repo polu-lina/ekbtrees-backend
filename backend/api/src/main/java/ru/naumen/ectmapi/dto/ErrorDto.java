@@ -1,11 +1,10 @@
 package ru.naumen.ectmapi.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ErrorDto
 {
     private final int statusCode;

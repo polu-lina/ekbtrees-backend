@@ -1,10 +1,14 @@
 package ru.naumen.ectmapi.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Schema(description = "Транспортная сущность информации о дереве, необходимой для отображения ее на карте")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class TreeMapInfoDto {
 
     @Schema(description = "Идентификатор дерева")

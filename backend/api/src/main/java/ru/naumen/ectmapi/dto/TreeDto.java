@@ -3,15 +3,16 @@ package ru.naumen.ectmapi.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.Collection;
 
 @Schema
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class TreeDto {
 
     @Schema(description = "Идентификатор дерева")
@@ -59,5 +60,8 @@ public class TreeDto {
 
     @Schema(description = "Статус дерева")
     private String status;
+
+    @Schema(description = "Список идентификаторов файлов, связанных с деревом")
+    private Collection<Long> fileIds;
 
 }
