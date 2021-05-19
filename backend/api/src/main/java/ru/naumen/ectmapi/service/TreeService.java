@@ -3,13 +3,12 @@ package ru.naumen.ectmapi.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.naumen.ectmapi.converter.TreeConverter;
 import ru.naumen.ectmapi.dto.TreeDto;
-import ru.naumen.ectmapi.entity.FileDescription;
 import ru.naumen.ectmapi.entity.Tree;
 import ru.naumen.ectmapi.repository.FileDescriptionRepository;
+import ru.naumen.ectmapi.repository.SpeciesTreeRepository;
 import ru.naumen.ectmapi.repository.TreeRepository;
 
 @Service
@@ -20,8 +19,13 @@ public class TreeService {
     private final TreeConverter treeConverter;
     private final FileDescriptionRepository fileDescriptionRepository;
     private final FileService fileService;
+    private final SpeciesTreeRepository speciesTreeRepository;
 
     public void save(TreeDto tree) {
+        if(!speciesTreeRepository.isExists(tree.getSpecies().getId())) {
+            throw new IllegalStateException("Species not found");
+        }
+
         Tree treeEntity = treeConverter.fromDto(tree);
 
         if (treeEntity.isNew()) {
