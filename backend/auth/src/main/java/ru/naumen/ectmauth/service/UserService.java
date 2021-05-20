@@ -1,4 +1,6 @@
-package ru.naumen.ectmauth.user;
+package ru.naumen.ectmauth.service;
+
+import ru.naumen.ectmauth.entity.User;
 
 import java.util.Optional;
 

@@ -1,14 +1,16 @@
-package ru.naumen.ectmauth.token;
+package ru.naumen.ectmauth.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.naumen.ectmauth.token.Token;
-import ru.naumen.ectmauth.token.TokenRepository;
+import ru.naumen.ectmauth.entity.Token;
+import ru.naumen.ectmauth.repository.TokenRepository;
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TokenService {
-    @Autowired
-    private TokenRepository tokenRepository;
+
+    private final TokenRepository tokenRepository;
 
     public Token save(Token token) {
         return tokenRepository.save(token);

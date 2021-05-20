@@ -1,16 +1,12 @@
-package ru.naumen.ectmauth.token;
+package ru.naumen.ectmauth.entity;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
-import ru.naumen.ectmauth.user.Role;
-import ru.naumen.ectmauth.user.User;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Entity
 @Table(name="tokens")

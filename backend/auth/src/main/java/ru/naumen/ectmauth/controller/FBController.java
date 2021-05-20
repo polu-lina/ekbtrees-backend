@@ -3,6 +3,7 @@ package ru.naumen.ectmauth.controller;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.facebook.api.Facebook;
@@ -12,10 +13,12 @@ import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.OAuth2Operations;
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.web.bind.annotation.*;
-import ru.naumen.ectmauth.jwtGenerator.JWTService;
-import ru.naumen.ectmauth.token.Token;
-import ru.naumen.ectmauth.user.Provider;
-import ru.naumen.ectmauth.user.UserServiceImpl;
+import ru.naumen.ectmauth.config.SocialNetworkConf;
+import ru.naumen.ectmauth.entity.Provider;
+import ru.naumen.ectmauth.entity.Token;
+import ru.naumen.ectmauth.service.JWTService;
+import ru.naumen.ectmauth.service.UserService;
+import ru.naumen.ectmauth.service.UserServiceImpl;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +28,13 @@ import java.util.Set;
 
 
 @RestController
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @RequestMapping("/auth/fb")
 public class FBController {
+
+    private final UserService userService;
+    private final JWTService jwtService;
+    private final SocialNetworkConf conf;
 
     private final String appSecret = System.getenv("FB_APP_SECRET_KEY");
     private final String appId = System.getenv("FB_APP_ID");
@@ -35,12 +43,6 @@ public class FBController {
 
     private FacebookConnectionFactory factory = new FacebookConnectionFactory(appId,
             appSecret);
-
-
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private JWTService jwtService;
 
 
     @Operation(summary = "Авторизоваться через Facebook")
@@ -72,7 +74,7 @@ public class FBController {
         User userProfile = facebook.fetchObject("me", User.class, fields);
 
 
-        ru.naumen.ectmauth.user.User user = userService.findByFb_id(userProfile.getId());
+        ru.naumen.ectmauth.entity.User user = userService.findByFb_id(userProfile.getId());
         if (user == null) {
             user = createNewUser( accessToken);
         }
@@ -91,9 +93,9 @@ public class FBController {
 
     }
 
-    private ru.naumen.ectmauth.user.User createNewUser( AccessGrant accessToken) {
+    private ru.naumen.ectmauth.entity.User createNewUser( AccessGrant accessToken) {
 
-        ru.naumen.ectmauth.user.User user = new ru.naumen.ectmauth.user.User();
+        ru.naumen.ectmauth.entity.User user = new ru.naumen.ectmauth.entity.User();
 
 
             Connection<Facebook> connection = factory.createConnection(accessToken);
@@ -115,7 +117,6 @@ public class FBController {
 
         return user;
     }
-
 }
 
 

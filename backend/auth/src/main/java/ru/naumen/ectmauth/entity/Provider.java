@@ -1,4 +1,4 @@
-package ru.naumen.ectmauth.user;
+package ru.naumen.ectmauth.entity;
 
 public enum Provider {
 	LOCAL, FACEBOOK, VK

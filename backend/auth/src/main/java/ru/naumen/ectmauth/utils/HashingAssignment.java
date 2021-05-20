@@ -1,4 +1,4 @@
-package ru.naumen.ectmauth;
+package ru.naumen.ectmauth.utils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;

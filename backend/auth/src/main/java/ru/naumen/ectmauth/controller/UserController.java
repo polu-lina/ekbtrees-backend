@@ -8,35 +8,34 @@ import javax.servlet.ServletException;
 import io.jsonwebtoken.*;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import ru.naumen.ectmauth.HashingAssignment;
-import ru.naumen.ectmauth.jwtGenerator.JWTService;
-import ru.naumen.ectmauth.token.TokenService;
-import ru.naumen.ectmauth.user.*;
+import ru.naumen.ectmauth.utils.HashingAssignment;
+import ru.naumen.ectmauth.entity.Provider;
+import ru.naumen.ectmauth.entity.User;
+import ru.naumen.ectmauth.service.JWTService;
+import ru.naumen.ectmauth.service.TokenService;
+import ru.naumen.ectmauth.service.UserServiceImpl;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
 @Api(value = "UserController", produces = "application/json")
 @CrossOrigin(origins = "http://localhost", maxAge = 3600)
 @RestController
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @RequestMapping("/auth")
 public class UserController {
 
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private TokenService tokenService;
 
-    @Autowired
-    private JWTService jwtService;
+    private final UserServiceImpl userService;
+    private final TokenService tokenService;
+    private final JWTService jwtService;
 
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
 

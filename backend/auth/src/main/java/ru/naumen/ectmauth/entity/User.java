@@ -1,4 +1,4 @@
-package ru.naumen.ectmauth.user;
+package ru.naumen.ectmauth.entity;
 
 
 import java.util.Date;
@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
-import ru.naumen.ectmauth.token.Token;
 
 @Entity
 @Table(name="users")

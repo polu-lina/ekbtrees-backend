@@ -10,13 +10,15 @@ import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.responses.GetResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.naumen.ectmauth.jwtGenerator.JWTService;
-import ru.naumen.ectmauth.user.Provider;
-import ru.naumen.ectmauth.token.Token;
-import ru.naumen.ectmauth.user.User;
-import ru.naumen.ectmauth.user.UserServiceImpl;
+import ru.naumen.ectmauth.config.SocialNetworkConf;
+import ru.naumen.ectmauth.entity.Provider;
+import ru.naumen.ectmauth.entity.Token;
+import ru.naumen.ectmauth.entity.User;
+import ru.naumen.ectmauth.service.JWTService;
+import ru.naumen.ectmauth.service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -30,7 +32,12 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/auth/vk")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class VKController {
+
+    private final UserServiceImpl userService;
+    private final JWTService jwtService;
+    private final SocialNetworkConf conf;
 
     private final String clientSecret = System.getenv("VK_APP_SECRET_KEY");
     private final int clientId = Integer.parseInt(System.getenv("VK_APP_ID"));
@@ -38,18 +45,16 @@ public class VKController {
     private final String host = System.getenv("HOST");
     private final Integer port = Integer.valueOf(System.getenv("PORT"));
 
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private JWTService jwtService;
+
+
 
     TransportClient transportClient = HttpTransportClient.getInstance();
     VkApiClient vk = new VkApiClient(transportClient);
 
 
-    public VKController() throws ClientException, ApiException {
+   /* public VKController() throws ClientException, ApiException {
 
-    }
+    }*/
 
     @Operation(summary = "Авторизоваться через Вконтакте")
     @GetMapping("/authorize")
@@ -113,7 +118,7 @@ public class VKController {
 
             getUsersResponse = vk.users().get(actor).userIds(String.valueOf(user_vk_id)).execute();
 
-            GetResponse userR = getUsersResponse.get(0);
+            com.vk.api.sdk.objects.users.responses.GetResponse userR = getUsersResponse.get(0);
 
 
             user.setFirstName(userR.getFirstName());
