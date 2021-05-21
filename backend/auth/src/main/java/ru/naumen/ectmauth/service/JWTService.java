@@ -25,14 +25,14 @@ public class JWTService {
 
     private static final String JWT_PASSWORD = "bm5n3SkxCX4kKRy4";
 
-    public Map<String, String> createNewTokensWithSocialNetwork(Long id, String email, String first_name, String last_name, Provider provider, String access_token_vk_or_fb){
+    public Map<String, String> createNewTokensWithSocialNetwork(Long id, String email, String first_name, String last_name, Provider provider, String access_token_vk_or_fb) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("admin", "false");
         claims.put("email", email);
-        String accessToken = getSecretToken(id,email,first_name,last_name, provider);//jwt builder
+        String accessToken = getSecretToken(id, email, first_name, last_name, provider);//jwt builder
         Map<String, String> tokenJson = new HashMap<>();
         String refreshToken = RandomStringUtils.randomAlphabetic(20);
-        Token t=new Token();
+        Token t = new Token();
         t.setRefresh_token(refreshToken);
         t.setUser(userService.findById(id));
         t.setAccess_token(accessToken);
@@ -49,18 +49,18 @@ public class JWTService {
     }
 
     public Map<String, String> createNewTokens(Long id, String email, String first_name, String last_name, Provider provider) {
-        return createNewTokensWithSocialNetwork(id,email,first_name,last_name,provider,null);
+        return createNewTokensWithSocialNetwork(id, email, first_name, last_name, provider, null);
     }
 
-    private String getSecretToken( Long id,String email, String first_name, String last_name, Provider provider) {
+    private String getSecretToken(Long id, String email, String first_name, String last_name, Provider provider) {
         return Jwts.builder()
                 .setIssuer("Auth Server Ekb Trees")
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(Date.from(Instant.now().plusSeconds(100000)))
-                .claim("id",id)
+                .claim("id", id)
                 .claim("email", email)
-                .claim("first_name",first_name)
-                .claim("last_name",last_name)
+                .claim("first_name", first_name)
+                .claim("last_name", last_name)
                 .claim("Role", userService.findById(id).get().getRoles().stream().map(Role::getName).toArray(String[]::new))
                 .signWith(SignatureAlgorithm.HS256, JWT_PASSWORD).compact();
     }

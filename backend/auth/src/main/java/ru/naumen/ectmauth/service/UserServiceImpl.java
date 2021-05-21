@@ -11,8 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class UserServiceImpl implements UserService
-{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     public User save(User user) {
@@ -22,11 +21,16 @@ public class UserServiceImpl implements UserService
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-    public User findByVk_id(String vk_id){
+
+    public User findByVk_id(String vk_id) {
         return userRepository.findByVk_id(vk_id);
     }
-    public User findByFb_id(String fb_id){
+
+    public User findByFb_id(String fb_id) {
         return userRepository.findByFb_id(fb_id);
     }
-    public Optional<User> findById(Long id){return userRepository.findById(id);}
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
 }

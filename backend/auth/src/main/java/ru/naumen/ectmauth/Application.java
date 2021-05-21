@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Bean;
 @ConfigurationPropertiesScan("ru.naumen.ectmauth.config")
 public class Application {
 
-
-
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

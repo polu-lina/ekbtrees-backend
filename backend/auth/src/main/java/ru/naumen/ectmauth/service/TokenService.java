@@ -15,6 +15,9 @@ public class TokenService {
     public Token save(Token token) {
         return tokenRepository.save(token);
     }
-    public void delete(Token token){ tokenRepository.delete(token);}
+
+    public void delete(Token token) {
+        tokenRepository.delete(token);
+    }
 
 }

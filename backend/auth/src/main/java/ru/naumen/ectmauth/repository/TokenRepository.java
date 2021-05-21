@@ -7,5 +7,6 @@ import ru.naumen.ectmauth.entity.Token;
 @Repository
 public interface TokenRepository extends CrudRepository<Token, Long> {
     Token save(Token token);
-    void delete (Token token);
+
+    void delete(Token token);
 }

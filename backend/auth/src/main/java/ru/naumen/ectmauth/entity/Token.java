@@ -9,13 +9,12 @@ import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@Table(name="tokens")
+@Table(name = "tokens")
 public class Token {
 
 
-
     @Id
-    @Column(name="token_id")
+    @Column(name = "token_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long token_id;
     @CreationTimestamp
@@ -35,7 +34,6 @@ public class Token {
     private String access_token_VK;
     @Schema(description = "access_token пользователя для Facebook")
     private String access_token_FB;
-
 
 
     public Long getToken_id() {
@@ -86,9 +84,13 @@ public class Token {
         this.access_token_VK = access_token_VK;
     }
 
-    public String getAccess_token_FB() { return access_token_FB; }
+    public String getAccess_token_FB() {
+        return access_token_FB;
+    }
 
-    public void setAccess_token_FB(String access_token_FB) { this.access_token_FB = access_token_FB; }
+    public void setAccess_token_FB(String access_token_FB) {
+        this.access_token_FB = access_token_FB;
+    }
 
 
 }
