@@ -46,15 +46,9 @@ public class VKController {
     private final Integer port = Integer.valueOf(System.getenv("PORT"));
 
 
-
-
     TransportClient transportClient = HttpTransportClient.getInstance();
     VkApiClient vk = new VkApiClient(transportClient);
 
-
-   /* public VKController() throws ClientException, ApiException {
-
-    }*/
 
     @Operation(summary = "Авторизоваться через Вконтакте")
     @GetMapping("/authorize")
@@ -78,7 +72,7 @@ public class VKController {
             if (user == null) {
                 user = createNewUser(authResponse.getUserId(), authResponse.getAccessToken());
             }
-            System.out.println(1+" callback_VK "+user.getFirstName()+" "+user.getLastName()+" "+user.getVk_id());
+            System.out.println(1 + " callback_VK " + user.getFirstName() + " " + user.getLastName() + " " + user.getVk_id());
             Map<String, String> tokens = jwtService.createNewTokensWithSocialNetwork(user.getUser_id(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getProvider(), authResponse.getAccessToken());
             Cookie cookie_access_token = new Cookie("access_token", tokens.get("access_token"));
             cookie_access_token.setHttpOnly(true);
@@ -106,7 +100,6 @@ public class VKController {
     private String getRedirectUri() {
         return String.format("http://%s:%d", host, port) + "/auth/vk/callback";
     }
-
 
 
     private User createNewUser(Integer user_vk_id, String token) {

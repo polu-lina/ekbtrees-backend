@@ -10,16 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long user_id;
     @CreationTimestamp
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Дата создания пользователя")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Дата создания пользователя")
     private Date created;
     @Schema(description = "Почта", example = "naumen@mail.ru")
     private String email;
@@ -33,15 +33,14 @@ public class User {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Провайдер", example = "VK")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Провайдер", example = "VK")
     private Provider provider;
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private boolean enabled;
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Идентификатор пользователя Вконтакте")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор пользователя Вконтакте")
     private String vk_id;
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY,description = "Идентификатор пользователя Вконтакте")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Идентификатор пользователя Вконтакте")
     private String fb_id;
-
 
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
@@ -64,7 +63,6 @@ public class User {
     public void setTokens(Set<Token> tokens) {
         this.tokens = tokens;
     }
-
 
 
     public Long getUser_id() {
@@ -107,9 +105,10 @@ public class User {
         this.password = password;
     }
 
-    public String  getPhone() {
+    public String getPhone() {
         return phone;
     }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -146,11 +145,19 @@ public class User {
         this.provider = provider;
     }
 
-    public String getVk_id() { return vk_id; }
+    public String getVk_id() {
+        return vk_id;
+    }
 
-    public void setVk_id(String vk_id) { this.vk_id = vk_id; }
+    public void setVk_id(String vk_id) {
+        this.vk_id = vk_id;
+    }
 
-    public String getFb_id() { return fb_id; }
+    public String getFb_id() {
+        return fb_id;
+    }
 
-    public void setFb_id(String fb_id) { this.fb_id = fb_id; }
+    public void setFb_id(String fb_id) {
+        this.fb_id = fb_id;
+    }
 }
