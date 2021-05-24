@@ -1,33 +1,19 @@
 package ru.naumen.ectmauth.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Data
 @Entity
 @Table(name = "roles")
-public class Role {
-    @Id
-    @Column(name = "role_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@EqualsAndHashCode(callSuper = true)
+public class Role extends BaseEntity {
 
-    @Schema(description = "Провайдер", example = "VK")
+    @Column
     private String name;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

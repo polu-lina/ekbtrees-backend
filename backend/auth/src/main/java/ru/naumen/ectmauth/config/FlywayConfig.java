@@ -1,4 +1,4 @@
-package ru.naumen.ectmapi.config;
+package ru.naumen.ectmauth.config;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ public class FlywayConfig {
         return Flyway.configure()
                 .dataSource(dataSource)
                 .baselineOnMigrate(true)
-                .table("flyway_schema_api_history")
+                .table("flyway_schema_auth_history")
                 .locations("classpath:/db/migration")
                 .load();
     }

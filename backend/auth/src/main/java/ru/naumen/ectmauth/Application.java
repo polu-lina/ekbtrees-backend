@@ -1,16 +1,28 @@
 package ru.naumen.ectmauth;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 
+@OpenAPIDefinition(
+        info = @Info(
+                title = "EkbTrees Auth API",
+                version = "1.0",
+                contact = @Contact(
+                        name = "Maxim", email = "nagovitsin.maxim@gmail.com"
+                )
+        ),
+        servers = {
+                @Server(
+                        url = "https://ekb-trees-help.ru/"
+                )
+        }
+)
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "EkbTrees Auth API", version = "2.0", description = "Authorization Information"))
 @ConfigurationPropertiesScan("ru.naumen.ectmauth.config")
 public class Application {
 
