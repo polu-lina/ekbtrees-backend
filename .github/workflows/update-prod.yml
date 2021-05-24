@@ -63,7 +63,7 @@ jobs:
 
   update-auth:
 
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     env:
       DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
