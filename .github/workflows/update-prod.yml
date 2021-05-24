@@ -119,4 +119,4 @@ jobs:
             docker pull donkeyhott/ectm-auth:latest
             docker stop ectm-auth
             docker rm ectm-auth
-            docker run -d -p 8080:8080 --name ectm-auth --env-file ./prod.env donkeyhott/ectm-auth
+            docker run -d -p 8081:8081 --name ectm-auth --env-file ./prod.env donkeyhott/ectm-auth
