@@ -33,6 +33,22 @@
             LIMIT 1
     </select>
 
+    <select id="findAllByTreeId" resultType="ru.naumen.ectmapi.entity.FileDescription">
+        SELECT id,
+               title,
+               mime_type,
+               size,
+               uri,
+               hash
+        FROM file_description
+        WHERE tree_id = #{treeId}
+        ORDER BY id
+    </select>
+
+    <update id="updateTreeId">
+        UPDATE file_description SET tree_id = #{treeId} WHERE id = #{id}
+    </update>
+
     <select id="countByHash" resultType="long">
         SELECT count(*)
         FROM file_description

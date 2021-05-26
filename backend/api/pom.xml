@@ -6,8 +6,8 @@
 
     <properties>
         <java.version>11</java.version>
-        <openapi.version>1.5.5</openapi.version>
-        <mapsruct.version>1.4.2.Final</mapsruct.version>
+        <openapi.version>1.5.8</openapi.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
         <aws.sdk.version>1.11.1004</aws.sdk.version>
         <mybatis.spring.boot.starter.version>2.1.4</mybatis.spring.boot.starter.version>
         <postgis.jdbc.version>2.5.0</postgis.jdbc.version>
@@ -95,12 +95,12 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${mapsruct.version}</version>
+            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>${mapsruct.version}</version>
+            <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>

@@ -1,24 +1,20 @@
 package ru.naumen.ectmauth.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.naumen.ectmauth.entity.User;
 
+import java.util.Optional;
+
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-    User save(User user);
+@Transactional
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
+    User findByVkId(Long vkId);
 
-    @Query("SELECT u FROM User u WHERE u.vk_id = :vk_id")
-    public User findByVk_id(@Param("vk_id") String vk_id);
-
-    @Query("SELECT u FROM User u WHERE u.fb_id = :fb_id")
-    public User findByFb_id(@Param("fb_id") String fb_id);
-
-
+    User findByFbId(Long fbId);
 
 }

@@ -3,10 +3,12 @@ package ru.naumen.ectmapi.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@Schema
+@Schema(description = "Транспортная сущность файла")
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class FileDto {
 
     @Schema(description = "Идентификатор файла")
@@ -24,4 +26,6 @@ public class FileDto {
     @Schema(description = "Ссылка, переход по которой инициирует загрузку контента файла")
     private String uri;
 
+    @Schema(description = "Идентификатор дерева, с которым связан файл")
+    private Long treeId;
 }

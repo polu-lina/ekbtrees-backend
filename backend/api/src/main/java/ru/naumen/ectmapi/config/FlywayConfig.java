@@ -14,6 +14,7 @@ public class FlywayConfig {
         return Flyway.configure()
                 .dataSource(dataSource)
                 .baselineOnMigrate(true)
+                .table("flyway_schema_api_history")
                 .locations("classpath:/db/migration")
                 .load();
     }

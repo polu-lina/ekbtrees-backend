@@ -1,11 +1,15 @@
 package ru.naumen.ectmapi.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.naumen.ectmapi.converter.TreeConverter;
 import ru.naumen.ectmapi.dto.TreeDto;
 import ru.naumen.ectmapi.service.TreeService;
@@ -23,7 +27,7 @@ public class TreeController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/save")
     public void save(@RequestBody TreeDto treeDto){
-        treeService.save(treeConverter.fromDto(treeDto));
+        treeService.save(treeDto);
     }
 
     @Operation(summary = "Предоставляет дерево по id")
@@ -37,6 +41,32 @@ public class TreeController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id){ treeService.delete(id);}
+
+    @Operation(
+            summary = "Загружает файл в хранилище и прикрепляет его к дереву",
+            responses = {
+                    @ApiResponse(
+                            description = "id загружаемого файла"
+                    )
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Формат multipart/form-data, один файл с ключом 'file'",
+                    required = true,
+                    content = {
+                            @Content(
+                                    mediaType = "multipart/form-data",
+                                    schema = @Schema(
+                                            type = "object",
+                                            requiredProperties = "file"
+                                    )
+                            )
+                    }
+            )
+    )
+    @PostMapping("/attachFile/{treeId}")
+    public Long attachFile(@PathVariable Long treeId, @RequestParam("file") MultipartFile file) {
+        return treeService.attachFile(treeId, file);
+    }
 
 }
 

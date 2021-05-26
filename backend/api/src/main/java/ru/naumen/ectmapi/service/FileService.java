@@ -17,6 +17,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +37,10 @@ public class FileService {
 
     public FileDescription get(Long id) {
         return fileDescriptionRepository.find(id);
+    }
+
+    public List<FileDescription> listByTreeId(Long treeId) {
+        return fileDescriptionRepository.findAllByTreeId(treeId);
     }
 
     public void delete(Long id) {

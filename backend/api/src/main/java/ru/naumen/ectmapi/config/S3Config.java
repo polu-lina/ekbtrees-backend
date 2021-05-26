@@ -18,7 +18,7 @@ public class S3Config {
     private String secretAccessKey;
 
     @Bean
-    public AmazonS3 getClient() {
+    public AmazonS3 s3Client() {
         return AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(
                         new AwsClientBuilder.EndpointConfiguration(host, region)

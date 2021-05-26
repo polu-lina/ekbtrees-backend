@@ -3,12 +3,14 @@ package ru.naumen.ectmapi.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 
 @Schema(description = "Транспортная сущность комментария")
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentDto {
 
     @Schema(description = "Идентификатор комментария")

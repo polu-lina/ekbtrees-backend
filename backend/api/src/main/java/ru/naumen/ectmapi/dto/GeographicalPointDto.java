@@ -3,6 +3,7 @@ package ru.naumen.ectmapi.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Schema(description = "Транспортная сущность точки в географической системе координат")
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class GeographicalPointDto {
 
     @Schema(description = "Широта")

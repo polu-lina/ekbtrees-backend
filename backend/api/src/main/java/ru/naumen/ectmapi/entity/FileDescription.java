@@ -28,4 +28,6 @@ public class FileDescription extends Entity<Long> {
     private String uri;
 
     private String hash;
+
+    private Long treeId;
 }

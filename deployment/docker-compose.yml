@@ -13,6 +13,16 @@ services:
       s3:
         condition: service_started
 
+  auth:
+    image: donkeyhott/ectm-auth:latest
+    environment:
+      DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_started
+
   postgres:
     image: postgis/postgis:12-3.0-alpine
     environment:
