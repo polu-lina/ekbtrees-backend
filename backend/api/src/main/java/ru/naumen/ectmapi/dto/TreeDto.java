@@ -23,7 +23,8 @@ public class TreeDto {
     private GeographicalPointDto geographicalPoint;
 
     @Schema(description = "Порода дерева")
-    private String type;
+    @NotNull
+    private SpeciesTreeDto species;
 
     @Schema(description = "Высота дерева в метрах")
     private Double treeHeight;
