@@ -11,6 +11,8 @@ import ru.naumen.ectmapi.repository.FileDescriptionRepository;
 import ru.naumen.ectmapi.repository.SpeciesTreeRepository;
 import ru.naumen.ectmapi.repository.TreeRepository;
 
+import java.util.Collection;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TreeService {
@@ -34,7 +36,10 @@ public class TreeService {
             treeRepository.update(treeEntity);
         }
 
-        tree.getFileIds().forEach(fileId -> fileDescriptionRepository.updateTreeId(fileId, treeEntity.getId()));
+        Collection<Long> fileIds = tree.getFileIds();
+        if (fileIds != null) {
+            fileIds.forEach(fileId -> fileDescriptionRepository.updateTreeId(fileId, treeEntity.getId()));
+        }
     }
 
     public Tree get(Long id){
