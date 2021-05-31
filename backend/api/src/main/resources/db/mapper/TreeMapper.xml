@@ -49,26 +49,39 @@
         WHERE id = #{tree.id}
     </update>
 
+    <sql id="treeColumns">
+        tree.id                  AS id,
+        geographical_point       AS geographical_point,
+        species_tree.id          AS species_id,
+        species_tree.title       AS species_title,
+        tree_height              AS tree_height,
+        number_tree_trunks       AS number_tree_trunks,
+        trunk_girth              AS trunk_girth,
+        diameter_crown           AS diameter_crown,
+        height_first_branch      AS height_first_branch,
+        condition_assessment     AS condition_assessment,
+        age                      AS age,
+        tree_planting_type       AS tree_planting_type,
+        created                  AS created,
+        updated                  AS updated,
+        author_id                AS author_id,
+        status                   AS status
+    </sql>
+
     <select id="find" resultMap="treeMap">
-        SELECT tree.id                  AS id,
-               geographical_point       AS geographical_point,
-               species_tree.id          AS species_id,
-               species_tree.title       AS species_title,
-               tree_height              AS tree_height,
-               number_tree_trunks       AS number_tree_trunks,
-               trunk_girth              AS trunk_girth,
-               diameter_crown           AS diameter_crown,
-               height_first_branch      AS height_first_branch,
-               condition_assessment     AS condition_assessment,
-               age                      AS age,
-               tree_planting_type       AS tree_planting_type,
-               created                  AS created,
-               updated                  AS updated,
-               author_id                AS author_id,
-               status                   AS status
+        SELECT
+        <include refid="treeColumns"/>
         FROM tree
         LEFT JOIN species_tree ON species_id = species_tree.id
         WHERE tree.id = #{id}
+    </select>
+
+    <select id="findAllByAuthorId" resultMap="treeMap">
+        SELECT
+        <include refid="treeColumns"/>
+        FROM tree
+        LEFT JOIN species_tree ON species_id = species_tree.id
+        WHERE author_id = #{authorId}
     </select>
 
     <delete id="delete">

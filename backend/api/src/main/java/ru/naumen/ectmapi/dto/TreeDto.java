@@ -30,16 +30,16 @@ public class TreeDto {
     private Double treeHeight;
 
     @Schema(description = "Число стволов (целое)")
-    private Integer numberOfTreeTrunks;
+    private Integer numberTreeTrunks;
 
     @Schema(description = "Обхват (самого толстого) ствола в сантиметрах")
     private Double trunkGirth;
 
     @Schema(description = "Диаметр кроны в метрах")
-    private Double diameterOfCrown;
+    private Double diameterCrown;
 
     @Schema(description = "Высота первой ветви от земли в метрах")
-    private Double heightOfTheFirstBranch;
+    private Double heightFirstBranch;
 
     @Schema(description = "Визуальная оценка состояния (по шкале 1 до 5)")
     private Integer conditionAssessment;

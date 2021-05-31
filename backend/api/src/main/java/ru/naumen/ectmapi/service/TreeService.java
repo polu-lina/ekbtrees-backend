@@ -11,6 +11,8 @@ import ru.naumen.ectmapi.repository.FileDescriptionRepository;
 import ru.naumen.ectmapi.repository.SpeciesTreeRepository;
 import ru.naumen.ectmapi.repository.TreeRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class TreeService {
@@ -39,6 +41,10 @@ public class TreeService {
 
     public Tree get(Long id){
         return treeRepository.find(id);
+    }
+
+    public List<Tree> getAllByAuthorId(Long authorId) {
+        return treeRepository.findAllByAuthorId(authorId);
     }
 
     public void delete(Long id) {

@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import ru.naumen.ectmapi.entity.Tree;
 
+import java.util.List;
+
 @Mapper
 public interface TreeRepository {
 
@@ -12,6 +14,8 @@ public interface TreeRepository {
     void update(@Param("tree") Tree tree);
 
     Tree find(@Param("id") Long id);
+
+    List<Tree> findAllByAuthorId(@Param("authorId") Long authorId);
 
     void delete(@Param("id") Long id);
 

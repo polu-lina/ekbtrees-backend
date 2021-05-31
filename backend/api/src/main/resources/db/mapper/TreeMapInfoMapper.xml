@@ -12,18 +12,31 @@
                      resultMap="ru.naumen.ectmapi.repository.SpeciesTreeRepository.speciesTreeMap"/>
     </resultMap>
 
+    <sql id="treeMapInfoColumns">
+        tree.id              AS id,
+        geographical_point   AS geographical_point,
+        diameter_crown       AS diameter_crown,
+        species_tree.id      AS species_id,
+        species_tree.title   AS species_title
+    </sql>
+
     <select id="findInRegion" resultMap="treeMapInfoMap">
-        SELECT tree.id              AS id,
-               geographical_point   AS geographical_point,
-               diameter_crown       AS diameter_crown,
-               species_tree.id      AS species_id,
-               species_tree.title   AS species_title
+        SELECT
+        <include refid="treeMapInfoColumns"/>
         FROM tree
         LEFT JOIN species_tree ON tree.species_id = species_tree.id
         WHERE
-            ST_Within(
-                    geographical_point,
-                    ST_MakeEnvelope(#{bottomRight.x}, #{bottomRight.y}, #{topLeft.x}, #{topLeft.y})
-                )
+        ST_Within(
+        geographical_point,
+        ST_MakeEnvelope(#{bottomRight.x}, #{bottomRight.y}, #{topLeft.x}, #{topLeft.y})
+        )
+    </select>
+
+    <select id="findAllByAuthorId" resultMap="treeMapInfoMap">
+        SELECT
+        <include refid="treeMapInfoColumns"/>
+        FROM tree
+        LEFT JOIN species_tree ON tree.species_id = species_tree.id
+        WHERE author_id = #{authorId}
     </select>
 </mapper>
