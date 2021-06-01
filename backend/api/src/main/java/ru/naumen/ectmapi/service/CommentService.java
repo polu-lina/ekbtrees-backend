@@ -24,10 +24,6 @@ public class CommentService {
         commentRepository.create(comment);
     }
 
-    public Comment get(Long id) {
-        return commentRepository.find(id);
-    }
-
     public List<Comment> getAllByTreeId(Long treeId) {
         return commentRepository.findAllByTreeId(treeId);
     }

@@ -5,8 +5,10 @@ services:
     environment:
       DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
       S3_HOST: "http://s3:9090"
+      JAVA_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     ports:
     - "8080:8080"
+    - "5005:5005"
     depends_on:
       postgres:
         condition: service_started
@@ -17,6 +19,7 @@ services:
     image: donkeyhott/ectm-auth:latest
     environment:
       DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
+      SHOW_SQL: "true"
     ports:
       - "8081:8081"
     depends_on:

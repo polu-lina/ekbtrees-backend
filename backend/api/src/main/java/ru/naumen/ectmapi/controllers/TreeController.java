@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.naumen.ectmapi.converter.TreeConverter;
@@ -55,7 +55,11 @@ public class TreeController {
     @Operation(summary = "Удаляет дерево по id")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id){ treeService.delete(id);}
+    @PreAuthorize("hasAnyRole(@Roles.SUPERUSER, @Roles.MODERATOR) " +
+            "or hasPermission(#id, @Domains.TREE, @Permissions.DELETE)")
+    public void delete(@PathVariable Long id) {
+        treeService.delete(id);
+    }
 
     @Operation(
             summary = "Загружает файл в хранилище и прикрепляет его к дереву",
