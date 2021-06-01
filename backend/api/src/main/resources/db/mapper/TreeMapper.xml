@@ -6,10 +6,10 @@
         <id property="id" column="id"/>
         <result property="geographicalPoint" column="geographical_point"/>
         <result property="treeHeight" column="tree_height"/>
-        <result property="numberTreeTrunks" column="number_tree_trunks"/>
+        <result property="numberOfTreeTrunks" column="number_tree_trunks"/>
         <result property="trunkGirth" column="trunk_girth"/>
-        <result property="diameterCrown" column="diameter_crown"/>
-        <result property="heightFirstBranch" column="height_first_branch"/>
+        <result property="diameterOfCrown" column="diameter_crown"/>
+        <result property="heightOfTheFirstBranch" column="height_first_branch"/>
         <result property="conditionAssessment" column="condition_assessment"/>
         <result property="age" column="age"/>
         <result property="treePlantingType" column="tree_planting_type"/>

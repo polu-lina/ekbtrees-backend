@@ -5,7 +5,7 @@
     <resultMap id="treeMapInfoMap" type="ru.naumen.ectmapi.entity.TreeMapInfo">
         <id property="id" column="id"/>
         <result property="geographicalPoint" column="geographical_point"/>
-        <result property="diameterCrown" column="diameter_crown"/>
+        <result property="diameterOfCrown" column="diameter_crown"/>
 
         <association property="species"
                      columnPrefix="species_"

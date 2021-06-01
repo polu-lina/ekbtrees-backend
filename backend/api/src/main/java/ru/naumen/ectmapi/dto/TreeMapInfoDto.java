@@ -18,7 +18,7 @@ public class TreeMapInfoDto {
     private GeographicalPointDto geographicalPoint;
 
     @Schema(description = "Диаметр кроны")
-    private Double diameterCrown;
+    private Double diameterOfCrown;
 
     @Schema(description = "Порода дерева")
     private SpeciesTreeDto species;
