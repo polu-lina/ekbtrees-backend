@@ -17,4 +17,8 @@ public class TreeMapInfoService {
     public List<TreeMapInfo> getInRegion(Point topLeft, Point bottomRight) {
         return treeMapInfoRepository.findInRegion(topLeft, bottomRight);
     }
+
+    public List<TreeMapInfo> getAllByAuthorId(Long authorId) {
+        return treeMapInfoRepository.findAllByAuthorId(authorId);
+    }
 }
