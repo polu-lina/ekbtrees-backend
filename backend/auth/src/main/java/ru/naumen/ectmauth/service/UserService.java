@@ -12,7 +12,6 @@ import ru.naumen.ectmauth.repository.RoleRepository;
 import ru.naumen.ectmauth.repository.UserRepository;
 import ru.naumen.ectmauth.utils.CryptoUtils;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
