@@ -12,6 +12,8 @@ import ru.naumen.ectmauth.repository.RoleRepository;
 import ru.naumen.ectmauth.repository.UserRepository;
 import ru.naumen.ectmauth.utils.CryptoUtils;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserService {
@@ -23,6 +25,10 @@ public class UserService {
 
         if (newUserDto.getEmail() == null || newUserDto.getPassword() == null) {
             throw new AuthServiceException("Email and password are required");
+        }
+
+        if (userRepository.findByEmail(newUserDto.getEmail()).isEmpty()){
+            throw new AuthServiceException("Email is already in use");
         }
 
         User user = new User();
