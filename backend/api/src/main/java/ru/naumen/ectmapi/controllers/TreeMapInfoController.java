@@ -33,5 +33,18 @@ public class TreeMapInfoController {
         Point bottomRightPoint = new Point(bottomRightLatitude, bottomRightLongitude);
         return treeMapInfoConverter.toDto(treeMapInfoService.getInRegion(topLeftPoint, bottomRightPoint));
     }
+
+    @Operation(summary = "Предоставляет информацию о деревьях текущего пользователя")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/get")
+    public List<TreeMapInfoDto> get() {
+        /**
+         * Тут мы будем получать пользователя из контекста.
+         * authorId - временная заглушка.
+         * */
+        Long authorId = 1L; //FIXME
+
+        return treeMapInfoConverter.toDto(treeMapInfoService.getAllByAuthorId(authorId));
+    }
 }
 

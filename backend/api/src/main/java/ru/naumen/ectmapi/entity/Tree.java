@@ -18,7 +18,7 @@ public class Tree extends Entity<Long> {
     /**
      * Порода дерева
      */
-    private String type;
+    private SpeciesTree species;
 
     /**
      * Высота дерева в метрах
@@ -28,7 +28,7 @@ public class Tree extends Entity<Long> {
     /**
      * Число стволов
      */
-    private Integer numberTreeTrunks;
+    private Integer numberOfTreeTrunks;
 
     /**
      * Обхват (самого толстого) ствола в сантиметрах
@@ -38,12 +38,12 @@ public class Tree extends Entity<Long> {
     /**
      * Диаметр кроны в метрах
      */
-    private Double diameterCrown;
+    private Double diameterOfCrown;
 
     /**
      * Высота первой ветви от земли в метрах
      */
-    private Double heightFirstBranch;
+    private Double heightOfTheFirstBranch;
 
     /**
      * Визуальная оценка состояния (по шкале 1 до 5)

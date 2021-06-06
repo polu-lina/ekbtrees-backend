@@ -11,4 +11,6 @@ import java.util.List;
 public interface TreeMapInfoRepository {
 
     List<TreeMapInfo> findInRegion(@Param("topLeft") Point topLeft, @Param("bottomRight") Point bottomRight);
+
+    List<TreeMapInfo> findAllByAuthorId(@Param("authorId") Long authorId);
 }

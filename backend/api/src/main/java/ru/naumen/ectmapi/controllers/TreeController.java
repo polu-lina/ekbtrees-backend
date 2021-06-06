@@ -14,9 +14,11 @@ import ru.naumen.ectmapi.converter.TreeConverter;
 import ru.naumen.ectmapi.dto.TreeDto;
 import ru.naumen.ectmapi.service.TreeService;
 
+import java.util.List;
+
 
 @RestController
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@RequiredArgsConstructor
 @RequestMapping(value = "api/tree", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TreeController {
 
@@ -35,6 +37,19 @@ public class TreeController {
     @GetMapping("/get/{id}")
     public TreeDto get(@PathVariable Long id) {
         return treeConverter.toDto(treeService.get(id));
+    }
+
+    @Operation(summary = "Предоставляет деревья текущего пользователя")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/get")
+    public List<TreeDto> get() {
+        /**
+         * Тут мы будем получать пользователя из контекста.
+         * authorId - временная заглушка.
+         * */
+        Long authorId = 1L; //FIXME
+
+        return treeConverter.toDto(treeService.getAllByAuthorId(authorId));
     }
 
     @Operation(summary = "Удаляет дерево по id")
