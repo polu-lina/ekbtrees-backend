@@ -7,14 +7,27 @@
         VALUES (#{comment.authorId}, #{comment.text}, #{comment.treeId})
     </insert>
 
+    <sql id="commentColumns">
+        id,
+        created,
+        author_id,
+        text,
+        tree_id
+    </sql>
+
     <select id="find" resultType="ru.naumen.ectmapi.entity.Comment">
-        SELECT id,
-               created,
-               author_id,
-               text,
-               tree_id
+        SELECT
+        <include refid="commentColumns"/>
         FROM comment
         WHERE id = #{id}
+    </select>
+
+    <select id="findAllByTreeId" resultType="ru.naumen.ectmapi.entity.Comment">
+        SELECT
+        <include refid="commentColumns"/>
+        FROM comment
+        WHERE tree_id = #{treeId}
+        ORDER BY created
     </select>
 
     <delete id="delete">
