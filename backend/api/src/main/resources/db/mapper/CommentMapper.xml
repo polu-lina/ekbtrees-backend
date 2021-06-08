@@ -27,7 +27,7 @@
         <include refid="commentColumns"/>
         FROM comment
         WHERE tree_id = #{treeId}
-        ORDER BY created
+        ORDER BY created DESC
     </select>
 
     <delete id="delete">
