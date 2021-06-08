@@ -26,7 +26,7 @@ public class UserService {
             throw new AuthServiceException("Email and password are required");
         }
 
-        if (userRepository.findByEmail(newUserDto.getEmail()).isEmpty()){
+        if (!userRepository.findByEmail(newUserDto.getEmail()).isEmpty()){
             throw new AuthServiceException("Email is already in use");
         }
 
