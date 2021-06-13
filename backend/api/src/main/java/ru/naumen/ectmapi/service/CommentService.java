@@ -7,6 +7,8 @@ import ru.naumen.ectmapi.entity.Comment;
 import ru.naumen.ectmapi.repository.CommentRepository;
 import ru.naumen.ectmapi.repository.TreeRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CommentService {
@@ -24,6 +26,10 @@ public class CommentService {
 
     public Comment get(Long id) {
         return commentRepository.find(id);
+    }
+
+    public List<Comment> getAllByTreeId(Long treeId) {
+        return commentRepository.findAllByTreeId(treeId);
     }
 
     public void delete(Long id) {

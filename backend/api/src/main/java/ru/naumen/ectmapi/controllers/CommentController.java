@@ -10,6 +10,8 @@ import ru.naumen.ectmapi.converter.CommentConverter;
 import ru.naumen.ectmapi.dto.CommentDto;
 import ru.naumen.ectmapi.service.CommentService;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -31,6 +33,13 @@ public class CommentController {
     @GetMapping("/get/{id}")
     public CommentDto get(@PathVariable Long id) {
         return commentConverter.toDto(commentService.get(id));
+    }
+
+    @Operation(summary = "Предоставляет комментарии по id дерева")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/get-all/{treeId}")
+    public List<CommentDto> getAllByTreeId(@PathVariable Long treeId) {
+        return commentConverter.toDto(commentService.getAllByTreeId(treeId));
     }
 
     @Operation(summary = "Удаляет комментарий по id")
