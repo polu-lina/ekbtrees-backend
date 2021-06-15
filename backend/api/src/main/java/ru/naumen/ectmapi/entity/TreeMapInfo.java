@@ -16,7 +16,7 @@ public class TreeMapInfo extends Entity<Long> {
     /**
      * Диаметр кроны
      */
-    private Double diameterCrown;
+    private Double diameterOfCrown;
 
     /**
      * Порода дерева
