@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.naumen.ectmapi.converter.FileConverter;
@@ -67,6 +68,7 @@ public class FileController {
 
     @Operation(summary = "Удаляет файл по id")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole(@Roles.SUPERUSER, @Roles.MODERATOR)")
     public void delete(@PathVariable Long id) {
         fileService.delete(id);
     }

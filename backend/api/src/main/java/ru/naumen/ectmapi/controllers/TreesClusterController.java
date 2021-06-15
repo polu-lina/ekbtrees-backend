@@ -20,7 +20,7 @@ public class TreesClusterController {
     private final TreesClusterService treesClusterService;
     private final TreesClusterConverter treesClusterConverter;
 
-    @Operation(summary = "Предоставляет информацию о кластерах деревьев, входящих в указаную область")
+    @Operation(summary = "Предоставляет информацию о кластерах деревьев, входящих в указанную область")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/get-in-region")
     public List<TreesClusterDto> getInRegion(
@@ -32,5 +32,6 @@ public class TreesClusterController {
         Point topLeftPoint = new Point(topLeftLatitude, topLeftLongitude);
         Point bottomRightPoint = new Point(bottomRightLatitude, bottomRightLongitude);
         return treesClusterConverter.toDto(treesClusterService.getInRegion(topLeftPoint, bottomRightPoint));
+
     }
 }

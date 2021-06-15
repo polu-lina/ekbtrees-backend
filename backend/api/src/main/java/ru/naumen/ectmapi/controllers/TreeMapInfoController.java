@@ -20,7 +20,7 @@ public class TreeMapInfoController {
     private final TreeMapInfoService treeMapInfoService;
     private final TreeMapInfoConverter treeMapInfoConverter;
 
-    @Operation(summary = "Предоставляет информацию о деревьях, входящих в указаную область")
+    @Operation(summary = "Предоставляет информацию о деревьях, входящих в указанную область")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/get-in-region")
     public List<TreeMapInfoDto> getInRegion(

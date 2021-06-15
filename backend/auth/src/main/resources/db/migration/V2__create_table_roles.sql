@@ -9,8 +9,8 @@ create table if not exists roles
 
 create table if not exists users_roles
 (
-    role_id bigint not null constraint users_roles_user_id references users,
-    user_id bigint not null constraint users_roles_role_id references roles,
+    user_id bigint not null constraint users_roles_user_id references users,
+    role_id bigint not null constraint users_roles_role_id references roles,
     constraint users_roles_pkey
         primary key (role_id, user_id)
 );
