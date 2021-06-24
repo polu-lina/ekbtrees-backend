@@ -27,8 +27,8 @@
             useGeneratedKeys="true" keyProperty="tree.id" keyColumn="id">
         INSERT INTO tree (geographical_point, species_id, tree_height, number_tree_trunks, trunk_girth, diameter_crown,
                           height_first_branch, condition_assessment, age, tree_planting_type, author_id, status)
-        VALUES (#{tree.geographicalPoint}, #{tree.species.id}, #{tree.treeHeight}, #{tree.numberTreeTrunks}, #{tree.trunkGirth},
-                #{tree.diameterCrown}, #{tree.heightFirstBranch}, #{tree.conditionAssessment}, #{tree.age}, #{tree.treePlantingType},
+        VALUES (#{tree.geographicalPoint}, #{tree.species.id}, #{tree.treeHeight}, #{tree.numberOfTreeTrunks}, #{tree.trunkGirth},
+                #{tree.diameterOfCrown}, #{tree.heightOfTheFirstBranch}, #{tree.conditionAssessment}, #{tree.age}, #{tree.treePlantingType},
                 #{tree.authorId}, #{tree.status})
     </insert>
 
@@ -37,10 +37,10 @@
         SET geographical_point      = #{tree.geographicalPoint},
             species_id              = #{tree.species.id},
             tree_height             = #{tree.treeHeight},
-            number_tree_trunks      = #{tree.numberTreeTrunks},
+            number_tree_trunks      = #{tree.numberOfTreeTrunks},
             trunk_girth             = #{tree.trunkGirth},
-            diameter_crown          = #{tree.diameterCrown},
-            height_first_branch     = #{tree.heightFirstBranch},
+            diameter_crown          = #{tree.diameterOfCrown},
+            height_first_branch     = #{tree.heightOfTheFirstBranch},
             condition_assessment    = #{tree.conditionAssessment},
             age                     = #{tree.age},
             tree_planting_type      = #{tree.treePlantingType},
