@@ -21,7 +21,12 @@ public class CommentService {
             throw new IllegalStateException("Tree does not exist");
         }
 
-        commentRepository.create(comment);
+        if(comment.isNew()) {
+            commentRepository.create(comment);
+        } else {
+            commentRepository.update(comment)
+        }
+
     }
 
     public List<Comment> getAllByTreeId(Long treeId) {

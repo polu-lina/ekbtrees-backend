@@ -7,6 +7,12 @@
         VALUES (#{comment.authorId}, #{comment.text}, #{comment.treeId})
     </insert>
 
+    <update id="update">
+        UPDATE comment
+        SET text = #{comment.text}
+        WHERE id = #{comment.id} AND author_id = #{comment.authorId}
+    </update>
+
     <sql id="commentColumns">
         id,
         created,
