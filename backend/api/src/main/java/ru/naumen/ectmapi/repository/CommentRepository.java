@@ -11,6 +11,8 @@ public interface CommentRepository {
 
     void create(@Param("comment") Comment comment);
 
+    void update(@Param("comment") Comment comment);
+
     Comment find(@Param("id") Long id);
 
     List<Comment> findAllByTreeId(@Param("treeId") Long treeId);
