@@ -63,7 +63,8 @@ jobs:
           username: ${{ secrets.PROD_USERNAME }}
           key: ${{ secrets.PROD_SSH_KEY }}
           source: "deployment/docker-compose-prod.yml"
-          target: "docker-compose-prod.yml"
+          target: "."
+          strip_components: 1
 
   redeploy:
 
