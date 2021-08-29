@@ -31,6 +31,7 @@ class TreeClusterControllerTest extends ApiTest {
         get('/api/trees-cluster/get-in-region', [x1: 55, y1: 55, x2: 56, y2: 56])
                 .then()
                 .statusCode(200)
-                .body('find { it.count }', not(null))
+                .body('every { it.count != null && it.count != 0 }', is(true))
+                .body('every { it.centre != null }', is(true))
     }
 }

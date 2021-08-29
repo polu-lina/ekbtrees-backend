@@ -16,6 +16,8 @@ import ru.ekbtreeshelp.api.entity.Tree;
 public interface TreeConverter {
 
     @Mapping(source = "geoPoint", target = "geographicalPoint")
+    @Mapping(source = "creationDate", target = "created")
+    @Mapping(source = "lastModificationDate", target = "updated")
     TreeDto toDto(Tree tree);
 
     @Mapping(source = "geographicalPoint", target = "geoPoint")
