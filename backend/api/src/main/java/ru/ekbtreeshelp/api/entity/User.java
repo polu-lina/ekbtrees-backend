@@ -22,6 +22,8 @@ public class User extends BaseEntity {
 
     private String lastName;
 
+    private String phone;
+
     @ManyToMany
     @JoinTable(
             name = "users_roles",
