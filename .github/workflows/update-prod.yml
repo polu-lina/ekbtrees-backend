@@ -49,11 +49,27 @@ jobs:
       - name: Push image
         run: docker push donkeyhott/ekbtrees-auth:latest
 
+  update-compose-file:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: copy file via ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          source: "deployment/docker-compose-prod.yml"
+          target: "docker-compose-prod.yml"
+
   redeploy:
 
     runs-on: ubuntu-latest
 
-    needs: [update-api, update-auth]
+    needs: [update-api, update-auth, update-compose-file]
 
     steps:
       - name: Pull and run image
@@ -63,6 +79,8 @@ jobs:
           username: ${{ secrets.PROD_USERNAME }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
+            set -e
+
             rm prod.env
             echo "DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}" >> prod.env
             echo "DATASOURCE_LOGIN=${{ secrets.DATASOURCE_LOGIN }}" >> prod.env
@@ -84,7 +102,3 @@ jobs:
 
             docker-compose --env-file ./prod.env -f ./docker-compose-prod.yml down -v --remove-orphans
             docker-compose --env-file ./prod.env -f ./docker-compose-prod.yml up --build -d
-
-            docker stop ectm-auth
-            docker rm ectm-auth
-            docker run -d -p 8081:8081 --name ectm-auth --env-file ./prod.env donkeyhott/ectm-auth
