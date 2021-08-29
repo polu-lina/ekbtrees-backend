@@ -34,6 +34,7 @@ class TreeMapInfoControllerTest extends ApiTest {
                 .then()
                 .statusCode(200)
                 .body("find { it.id == ${ newTreeId } }", not(null))
+                .body("every { it.geographicalPoint != null }", is(true))
     }
 
     @Test
@@ -49,6 +50,7 @@ class TreeMapInfoControllerTest extends ApiTest {
                 .then()
                 .statusCode(200)
                 .body("find { it.id == ${ newTreeId } }", not(null))
+                .body("every { it.geographicalPoint != null }", is(true))
     }
 
     private static Response sendGetUserTreesRequest() {
