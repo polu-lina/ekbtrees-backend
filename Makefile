@@ -18,7 +18,7 @@ clear:
 	@cd deployment && docker-compose down
 
 full-clear:
-	@cd deployment && docker-compose down -v
+	@cd deployment && docker-compose down -v --remove-orphans
 
 logs:
 	@cd deployment && docker-compose logs --tail 10 -f $s
