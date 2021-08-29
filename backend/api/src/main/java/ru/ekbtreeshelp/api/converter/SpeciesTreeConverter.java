@@ -13,5 +13,11 @@ public interface SpeciesTreeConverter {
 
     SpeciesTree fromDto(SpeciesTreeDto speciesTreeDto);
 
+    default SpeciesTree fromLong(Long speciesId) {
+        SpeciesTree speciesTree = new SpeciesTree();
+        speciesTree.setId(speciesId);
+        return speciesTree;
+    }
+
     SpeciesTreeDto toDto(SpeciesTree speciesTree);
 }

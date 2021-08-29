@@ -63,7 +63,7 @@ class FileControllerTest extends ApiTest {
 
     @Test
     void testGetFilesByTree() {
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         File file = File.createTempFile('testAttachFile', null)
         file.write('testFileContent')

@@ -28,7 +28,7 @@ class TreeMapInfoControllerTest extends ApiTest {
 
     @Test
     void testGetInRegion() {
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         get('api/tree-map-info/get-in-region', [x1: 55, y1: 55, x2: 56, y2: 56])
                 .then()
@@ -43,7 +43,7 @@ class TreeMapInfoControllerTest extends ApiTest {
                 .statusCode(200)
                 .body('find { it.id }', is(null))
 
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         sendGetUserTreesRequest()
                 .then()

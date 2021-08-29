@@ -1,14 +1,10 @@
 package ru.ekbtreeshelp.tests.api
 
-import groovy.json.JsonSlurper
-import io.restassured.response.Response
+
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import ru.ekbtreeshelp.tests.data.GeographicalPointDto
-import ru.ekbtreeshelp.tests.data.SpeciesTreeDto
 import ru.ekbtreeshelp.tests.data.TestContext
 import ru.ekbtreeshelp.tests.data.TestUser
-import ru.ekbtreeshelp.tests.data.TreeDto
 
 import static org.hamcrest.Matchers.*
 
@@ -30,14 +26,23 @@ class TreeControllerTest extends ApiTest {
     }
 
     @Test
-    void testAddTree() {
-        addTree()
+    void testOldAddTree() {
+        sendAddTreeRequest()
+                .then()
+                .statusCode(201)
+    }
+
+    @Test
+    void testCreateTree() {
+        sendCreateTreeRequest()
+                .then()
+                .statusCode(201)
     }
 
     @Test
     void testGetCurrentUserTrees() {
 
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         get('/api/tree/get')
                 .then()
@@ -48,7 +53,7 @@ class TreeControllerTest extends ApiTest {
     @Test
     void testGetTreeById() {
 
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         get("/api/tree/get/${ newTreeId }")
                 .then()
@@ -59,7 +64,7 @@ class TreeControllerTest extends ApiTest {
     @Test
     void testDeleteTreeById() {
 
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         delete("/api/tree/delete/${ newTreeId }")
                 .then()
@@ -69,7 +74,7 @@ class TreeControllerTest extends ApiTest {
     @Test
     void testAttachFile() {
 
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
 
         File file = File.createTempFile('testAttachFile', null)
         file.write('testFileContent')
@@ -83,6 +88,6 @@ class TreeControllerTest extends ApiTest {
     void testUnauthenticatedUserCantAddTree() {
         testContext.user = null
 
-        sendAddTreeRequest().then().statusCode(403)
+        sendCreateTreeRequest().then().statusCode(403)
     }
 }
