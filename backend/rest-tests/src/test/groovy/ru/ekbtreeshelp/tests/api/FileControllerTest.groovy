@@ -1,13 +1,12 @@
 package ru.ekbtreeshelp.tests.api
 
-
+import org.apache.http.entity.ContentType
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ru.ekbtreeshelp.tests.data.TestContext
 import ru.ekbtreeshelp.tests.data.TestUser
 
-import static org.hamcrest.Matchers.equalTo
-import static org.hamcrest.Matchers.not
+import static org.hamcrest.Matchers.*
 
 class FileControllerTest extends ApiTest {
 
@@ -50,6 +49,7 @@ class FileControllerTest extends ApiTest {
                 .then()
                 .statusCode(200)
                 .body('id as Long', equalTo(newFileId))
+                .body('uri', stringContainsInOrder("/api/file/download"))
     }
 
     @Test
@@ -76,5 +76,15 @@ class FileControllerTest extends ApiTest {
                 .then()
                 .statusCode(200)
                 .body('find { it.id }', not(null))
+    }
+
+    @Test
+    void testDownloadFile() {
+        Long newFileId = uploadFile()
+
+        get("/api/file/download/${ newFileId }")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.APPLICATION_OCTET_STREAM.toString())
     }
 }
