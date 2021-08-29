@@ -56,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: copy file via ssh
+      - name: Copy file via ssh
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.PROD_HOST }}
@@ -96,7 +96,7 @@ jobs:
             echo "REFRESH_TOKEN_LIFESPAN=${{ secrets.REFRESH_TOKEN_LIFESPAN }}" >> prod.env
             echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> prod.env
             echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> prod.env
-            echo "PASSWORDS_SALT=${{ secrets.PASSWORD_SALT }}" >> prod.env
+            echo "PASSWORDS_SALT=${{ secrets.PASSWORDS_SALT }}" >> prod.env
 
             docker pull donkeyhott/ekbtrees-api:latest
             docker pull donkeyhott/ekbtrees-auth:latest
