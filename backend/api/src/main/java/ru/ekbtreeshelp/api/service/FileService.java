@@ -2,10 +2,15 @@ package ru.ekbtreeshelp.api.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ekbtreeshelp.api.entity.FileEntity;
@@ -24,16 +29,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FileService.class);
     private static final String BUCKET = "ectm";
 
     private final FileRepository fileRepository;
     private final SecurityService securityService;
     private final AmazonS3 s3;
 
+    @Transactional
     public FileEntity save(MultipartFile file) {
         FileEntity fileEntity = saveToS3(file);
         fileEntity.setAuthor(securityService.getCurrentUser());
-        return fileRepository.save(fileEntity);
+        fileEntity = fileRepository.save(fileEntity);
+        if (fileEntity.getUri() == null) {
+            fileEntity.setUri("/api/file/download/" + fileEntity.getId());
+            fileEntity = fileRepository.save(fileEntity);
+        }
+        return fileEntity;
     }
 
     public FileEntity get(Long id) {
@@ -54,9 +66,19 @@ public class FileService {
         fileRepository.delete(fileToDelete);
     }
 
+    public ByteArrayResource getFromS3(FileEntity fileEntity) {
+        GetObjectRequest fileRequest = new GetObjectRequest(BUCKET, fileEntity.getHash());
+        try {
+            byte[] fileBytes = s3.getObject(fileRequest).getObjectContent().readAllBytes();
+            return new ByteArrayResource(fileBytes);
+        } catch (IOException e) {
+            throw new FileServiceException(e.getMessage(), e);
+        }
+    }
+
     private FileEntity saveToS3(MultipartFile file) {
 
-        String uri;
+        String uri = null;
         String hash;
         long fileSize;
 
@@ -80,8 +102,6 @@ public class FileService {
                         new PutObjectRequest(BUCKET, hash, tempFile)
                                 .withCannedAcl(CannedAccessControlList.PublicRead)
                 );
-
-                uri = s3.getUrl(BUCKET, hash).toString();
 
             } else {
                 uri = sameHashFile.get().getUri();
