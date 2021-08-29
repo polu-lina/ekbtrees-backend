@@ -2,6 +2,7 @@ package ru.ekbtreeshelp.api.converter;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import ru.ekbtreeshelp.api.dto.CreateTreeDto;
 import ru.ekbtreeshelp.api.dto.TreeDto;
 import ru.ekbtreeshelp.api.entity.Tree;
 
@@ -19,4 +20,8 @@ public interface TreeConverter {
 
     @Mapping(source = "geographicalPoint", target = "geoPoint")
     Tree fromDto(TreeDto treeDto);
+
+    @Mapping(source = "geographicalPoint", target = "geoPoint")
+    @Mapping(source = "speciesId", target = "species")
+    Tree fromDto(CreateTreeDto createTreeDto);
 }

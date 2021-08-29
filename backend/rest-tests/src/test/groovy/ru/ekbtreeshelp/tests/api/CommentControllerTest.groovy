@@ -27,14 +27,14 @@ class CommentControllerTest extends ApiTest {
 
     @Test
     void testAddComment() {
-        sendAddTreeRequest()
+        sendCreateTreeRequest()
                 .then()
                 .statusCode(201)
     }
 
     @Test
     void testGetCommentsByTreeId() {
-        Long newTreeId = addTree()
+        Long newTreeId = createTree()
         addComment(newTreeId)
 
         get("/api/comment/get-all/${ newTreeId }")
@@ -53,7 +53,7 @@ class CommentControllerTest extends ApiTest {
     }
 
     private static Response sendAddCommentRequest(Long treeId = null) {
-        Long newTreeId = treeId ?: addTree()
+        Long newTreeId = treeId ?: createTree()
 
         return post('/api/comment/save', [text: 'comment', treeId: newTreeId])
     }

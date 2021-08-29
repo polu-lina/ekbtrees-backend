@@ -33,6 +33,27 @@ abstract class ApiTest extends RestTest {
         ) as Collection<SpeciesTreeDto>)[0]
     }
 
+    protected static Response sendCreateTreeRequest() {
+        Map<String, Object> body = [age                   : 1,
+                                    conditionAssessment   : 1,
+                                    diameterOfCrown       : 1,
+                                    fileIds               : [],
+                                    geographicalPoint     : [
+                                            latitude : 55.5,
+                                            longitude: 55.5
+                                    ],
+                                    heightOfTheFirstBranch: 1,
+                                    numberOfTreeTrunks    : 1,
+                                    speciesId             : 8,
+                                    status                : 'alive',
+                                    treeHeight            : 1,
+                                    treePlantingType      : 'planting type',
+                                    trunkGirth            : 1]
+
+        post('/api/tree', body)
+    }
+
+    @Deprecated
     protected static Response sendAddTreeRequest() {
         TreeDto tree = new TreeDto(
                 geographicalPoint: new GeographicalPointDto(
@@ -54,8 +75,8 @@ abstract class ApiTest extends RestTest {
         return post('/api/tree/save', tree)
     }
 
-    protected static Long addTree() {
-        Response response = sendAddTreeRequest()
+    protected static Long createTree() {
+        Response response = sendCreateTreeRequest()
 
         response.then().statusCode(201)
 

@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ekbtreeshelp.api.converter.TreeConverter;
+import ru.ekbtreeshelp.api.dto.CreateTreeDto;
 import ru.ekbtreeshelp.api.dto.TreeDto;
 import ru.ekbtreeshelp.api.service.SecurityService;
 import ru.ekbtreeshelp.api.service.TreeService;
@@ -28,12 +29,21 @@ public class TreeController {
     private final TreeConverter treeConverter;
     private final SecurityService securityService;
 
+    @Deprecated
     @Operation(summary = "Сохраняет дерево")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/save")
     @PreAuthorize("isAuthenticated()")
     public Long save(@RequestBody TreeDto treeDto) {
         return treeService.save(treeDto);
+    }
+
+    @Operation(summary = "Сохраняет новое дерево")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    @PreAuthorize("isAuthenticated()")
+    public Long create(@RequestBody CreateTreeDto createTreeDto) {
+        return treeService.create(createTreeDto);
     }
 
     @Operation(summary = "Предоставляет дерево по id")
@@ -90,4 +100,3 @@ public class TreeController {
     }
 
 }
-

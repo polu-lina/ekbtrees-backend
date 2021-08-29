@@ -26,7 +26,7 @@ class TreeClusterControllerTest extends ApiTest {
 
     @Test
     void testGetInRegion() {
-        addTree()
+        createTree()
 
         get('/api/trees-cluster/get-in-region', [x1: 55, y1: 55, x2: 56, y2: 56])
                 .then()
