@@ -3,7 +3,7 @@ name: UpdateProd
 
 on:
   push:
-    branches: 
+    branches:
     - master
 
   # Allows to run this workflow manually from the Actions tab
@@ -14,16 +14,6 @@ jobs:
   update-api:
 
     runs-on: ubuntu-latest
-
-    env:
-      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-      DATASOURCE_LOGIN: ${{ secrets.DATASOURCE_LOGIN }}
-      DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
-      DDL_AUTO: 'none'
-      S3_HOST: ${{ secrets.S3_HOST }}
-      S3_REGION: ${{ secrets.S3_REGION }}
-      S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-      S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
     steps:
       - uses: actions/checkout@v2
@@ -38,47 +28,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Push image
-        run: docker push donkeyhott/ectm-api:latest
-
-      - name: Pull and run image
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USERNAME }}
-          key: ${{ secrets.PROD_SSH_KEY }}
-          script: |
-            echo "DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}" >> prod.env
-            echo "DATASOURCE_LOGIN=${{ secrets.DATASOURCE_LOGIN }}" >> prod.env
-            echo "DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}" >> prod.env
-            echo "DDL_AUTO=none" >> prod.env
-            echo "S3_HOST=${{ secrets.S3_HOST }}" >> prod.env
-            echo "S3_REGION=${{ secrets.S3_REGION }}" >> prod.env
-            echo "S3_ACCESS_KEY_ID=${{ secrets.S3_ACCESS_KEY_ID }}" >> prod.env
-            echo "S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }}" >> prod.env
-            docker pull donkeyhott/ectm-api:latest
-            docker stop ectm-api
-            docker rm ectm-api
-            docker run -d -p 8080:8080 --name ectm-api --env-file ./prod.env donkeyhott/ectm-api
-
+        run: docker push donkeyhott/ekbtrees-api:latest
 
   update-auth:
 
     runs-on: ubuntu-latest
-
-    env:
-      DATASOURCE_URL: ${{ secrets.DATASOURCE_URL }}
-      DATASOURCE_LOGIN: ${{ secrets.DATASOURCE_LOGIN }}
-      DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASSWORD }}
-      DDL_AUTO: 'none'
-      VK_APP_ID: ${{ secrets.VK_APP_ID }}
-      VK_APP_SECRET_KEY: ${{ secrets.VK_APP_SECRET_KEY }}
-      FB_APP_ID: ${{ secrets.FB_APP_ID }}
-      FB_APP_SECRET_KEY: ${{ secrets.FB_APP_SECRET_KEY }}
-      BASE_URL: ${{ secrets.BASE_URL }}
-      ACCESS_TOKEN_LIFESPAN: ${{ secrets.ACCESS_TOKEN_LIFESPAN }}
-      REFRESH_TOKEN_LIFESPAN: ${{ secrets.REFRESH_TOKEN_LIFESPAN }}
-      ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
 
     steps:
       - uses: actions/checkout@v2
@@ -93,8 +47,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Push image
-        run: docker push donkeyhott/ectm-auth:latest
+        run: docker push donkeyhott/ekbtrees-auth:latest
 
+  redeploy:
+
+    runs-on: ubuntu-latest
+
+    needs: [update-api, update-auth]
+
+    steps:
       - name: Pull and run image
         uses: appleboy/ssh-action@master
         with:
@@ -102,6 +63,7 @@ jobs:
           username: ${{ secrets.PROD_USERNAME }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
+            rm prod.env
             echo "DATASOURCE_URL=${{ secrets.DATASOURCE_URL }}" >> prod.env
             echo "DATASOURCE_LOGIN=${{ secrets.DATASOURCE_LOGIN }}" >> prod.env
             echo "DATASOURCE_PASSWORD=${{ secrets.DATASOURCE_PASSWORD }}" >> prod.env
@@ -115,8 +77,14 @@ jobs:
             echo "REFRESH_TOKEN_LIFESPAN=${{ secrets.REFRESH_TOKEN_LIFESPAN }}" >> prod.env
             echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> prod.env
             echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> prod.env
+            echo "PASSWORDS_SALT=${{ secrets.PASSWORD_SALT }}" >> prod.env
 
-            docker pull donkeyhott/ectm-auth:latest
+            docker pull donkeyhott/ekbtrees-api:latest
+            docker pull donkeyhott/ekbtrees-auth:latest
+
+            docker-compose --env-file ./prod.env -f ./docker-compose-prod.yml down -v --remove-orphans
+            docker-compose --env-file ./prod.env -f ./docker-compose-prod.yml up --build -d
+
             docker stop ectm-auth
             docker rm ectm-auth
             docker run -d -p 8081:8081 --name ectm-auth --env-file ./prod.env donkeyhott/ectm-auth

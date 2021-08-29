@@ -72,7 +72,6 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/groovy</sourceDirectory>
         <testSourceDirectory>src/test/groovy</testSourceDirectory>
         <plugins>
             <plugin>

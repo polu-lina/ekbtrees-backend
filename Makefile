@@ -1,9 +1,12 @@
 
 build-api:
-	@cd backend/api && mvn clean spring-boot:build-image -DskipTests
+	@cd backend/api && ./mvnw clean spring-boot:build-image -DskipTests
 
 build-auth:
-	@cd backend/auth && mvn clean spring-boot:build-image -DskipTests
+	@cd backend/auth && ./mvnw clean spring-boot:build-image -DskipTests
+
+build-rest-tests:
+	@cd backend/rest-tests && docker build -t docker.io/donkeyhott/ekbtrees-rest-tests:latest .
 
 start:
 	@cd deployment && docker-compose up --build -d
@@ -19,3 +22,6 @@ full-clear:
 
 logs:
 	@cd deployment && docker-compose logs --tail 10 -f $s
+
+rest-tests:
+	@cd deployment && docker-compose -f docker-compose-tests.yml up --build --abort-on-container-exit
