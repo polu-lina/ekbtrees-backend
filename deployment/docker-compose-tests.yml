@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  api:
+    image: donkeyhott/ekbtrees-api:latest
+    environment:
+      DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
+      S3_HOST: "http://s3:9090"
+    depends_on:
+      - postgres
+      - s3
+      - auth
+
+  auth:
+    image: donkeyhott/ekbtrees-auth:latest
+    environment:
+      DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgis/postgis:12-3.0-alpine
+    environment:
+      POSTGRES_DB: "ectm"
+      POSTGRES_USER: "ectm"
+      POSTGRES_PASSWORD: "ectm"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  s3:
+    image: adobe/s3mock:2.1.29
+    environment:
+      initialBuckets: "ectm"
+
+  resttests:
+    build: ../backend/rest-tests
+    environment:
+      API_BASE_URI: "http://api"
+      API_PORT: "8080"
+      AUTH_BASE_URI: "http://auth"
+      AUTH_PORT: "8081"
+    depends_on:
+      - api
+      - auth
+
+volumes:
+  dbdata:

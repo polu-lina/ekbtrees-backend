@@ -1,27 +1,29 @@
 version: "3.9"
 services:
   api:
-    image: donkeyhott/ectm-api:latest
+    image: donkeyhott/ekbtrees-api:latest
     environment:
       DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
       S3_HOST: "http://s3:9090"
+      SHOW_SQL: "true"
+      JAVA_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     ports:
     - "8080:8080"
+    - "5005:5005"
     depends_on:
-      postgres:
-        condition: service_started
-      s3:
-        condition: service_started
+      - postgres
+      - s3
+      - auth
 
   auth:
-    image: donkeyhott/ectm-auth:latest
+    image: donkeyhott/ekbtrees-auth:latest
     environment:
       DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
+      SHOW_SQL: "true"
     ports:
       - "8081:8081"
     depends_on:
-      postgres:
-        condition: service_started
+      - postgres
 
   postgres:
     image: postgis/postgis:12-3.0-alpine

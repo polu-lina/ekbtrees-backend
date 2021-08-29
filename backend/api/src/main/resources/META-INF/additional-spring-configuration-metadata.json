@@ -19,6 +19,21 @@
       "name": "s3.secret-access-key",
       "type": "java.lang.String",
       "description": "Секретный ключ в S3 сервисе."
+    },
+    {
+      "name": "jwt.access-token-secret",
+      "type": "java.lang.String",
+      "description": "Секрет access token'а в формате Base64URL."
+    },
+    {
+      "name": "geo.srid",
+      "type": "java.lang.Integer",
+      "description": "Идентификатор геометрии для использования в postgis."
+    },
+    {
+      "name": "geo.cluster-distance",
+      "type": "java.lang.Double",
+      "description": "Расстояние для расчета кластеров."
     }
   ]
 }
