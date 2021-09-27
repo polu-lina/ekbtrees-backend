@@ -18,9 +18,9 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>auth</module>
-        <module>api</module>
-        <module>rest-tests</module>
+        <module>backend/auth</module>
+        <module>backend/api</module>
+        <module>backend/rest-tests</module>
     </modules>
 
 </project>
