@@ -14,12 +14,13 @@
     <packaging>pom</packaging>
 
     <groupId>ru.ekbtreeshelp</groupId>
-    <artifactId>ekbtrees-parent</artifactId>
+    <artifactId>ekbtreeshelp-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
         <module>backend/auth</module>
         <module>backend/api</module>
+        <module>backend/admin</module>
         <module>backend/rest-tests</module>
     </modules>
 

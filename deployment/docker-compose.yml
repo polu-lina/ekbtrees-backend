@@ -27,6 +27,11 @@ services:
     depends_on:
       - postgres
 
+  admin:
+    image: donkeyhott/ekbtrees-admin:latest
+    ports:
+      - "8082:8082"
+
   postgres:
     image: postgis/postgis:12-3.0-alpine
     environment:
