@@ -45,7 +45,7 @@ public class User extends BaseEntity {
     @Column(name = "fb_id")
     private Long fbId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -53,6 +53,6 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<RefreshToken> refreshTokens = new HashSet<>();
 }

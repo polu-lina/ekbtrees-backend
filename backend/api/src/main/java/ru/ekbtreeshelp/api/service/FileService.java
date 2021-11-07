@@ -30,7 +30,7 @@ import java.util.UUID;
 public class FileService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileService.class);
-    private static final String BUCKET = "ectm";
+    private static final String BUCKET = "treeshelp";
 
     private final FileRepository fileRepository;
     private final SecurityService securityService;

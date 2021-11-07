@@ -35,7 +35,7 @@ class AuthControllerTest extends AuthTest {
 
         response
                 .then()
-                .statusCode(302)
+                .statusCode(200)
 
         testContext.user = null
 
@@ -43,7 +43,7 @@ class AuthControllerTest extends AuthTest {
                 .cookie(CookieNames.REFRESH_TOKEN, response.cookie(CookieNames.REFRESH_TOKEN))
                 .post('/auth/newTokens')
                 .then()
-                .statusCode(302)
+                .statusCode(200)
                 .cookie(CookieNames.ACCESS_TOKEN, not(null))
                 .cookie(CookieNames.REFRESH_TOKEN, not(null))
     }
