@@ -115,7 +115,7 @@ abstract class RestTest {
                             .header(HttpHeaders.AUTHORIZATION, "Basic " + getBasicAuthHeader())
                             .post("/auth/login")
 
-                    response.then().statusCode(302)
+                    response.then().statusCode(200)
 
                     return response.cookie(CookieNames.ACCESS_TOKEN)
         })

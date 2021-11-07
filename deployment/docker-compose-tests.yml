@@ -29,10 +29,11 @@ services:
   s3:
     image: adobe/s3mock:2.1.29
     environment:
-      initialBuckets: "ectm"
+      initialBuckets: "treeshelp"
 
   resttests:
-    build: ../backend/rest-tests
+    build:
+      context: ../backend/rest-tests
     environment:
       API_BASE_URI: "http://api"
       API_PORT: "8080"

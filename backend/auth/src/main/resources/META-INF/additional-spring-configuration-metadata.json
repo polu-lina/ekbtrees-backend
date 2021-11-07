@@ -49,6 +49,11 @@
       "name": "crypto.salt",
       "type": "java.lang.String",
       "description": "Соль для хеширования паролей."
+    },
+    {
+      "name": "superuser.password",
+      "type": "java.lang.String",
+      "description": "Пароль суперпользователя при его создании."
     }
   ]
 }
