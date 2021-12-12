@@ -170,4 +170,39 @@ class TreeControllerTest extends ApiTest {
                 .body('editable', is(false))
                 .body('deletable', is(false))
     }
+
+    @Test
+    void testFileIDsReturnsWithTree() {
+        Long newTreeId = createTree()
+
+        File file = File.createTempFile('testAttachFile', null)
+        file.write('testFileContent')
+
+        Long createdFileId = post("/api/tree/attachFile/${ newTreeId }", file)
+                .then()
+                .statusCode(200)
+                .extract()
+                .asString()
+                .toLong()
+
+        get("/api/tree/get/${ newTreeId }")
+                .then()
+                .statusCode(200)
+                .body('fileIds?.collect { it as Long }', equalTo([createdFileId]))
+    }
+
+    @Test
+    void testSpeciesIsUpdatable() {
+        Long newTreeId = createTree()
+
+        Long newSpeciesId = 1
+        put("/api/tree/${ newTreeId }", [speciesId: newSpeciesId])
+                .then()
+                .statusCode(200)
+
+        get("/api/tree/get/${ newTreeId }")
+                .then()
+                .statusCode(200)
+                .body('species?.id as Long', equalTo(newSpeciesId))
+    }
 }
