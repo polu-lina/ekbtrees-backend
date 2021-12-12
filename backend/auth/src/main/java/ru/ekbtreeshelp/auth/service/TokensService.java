@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.stereotype.Service;
 import ru.ekbtreeshelp.auth.dto.JwtDto;
-import ru.ekbtreeshelp.auth.utils.CryptoUtils;
+import ru.ekbtreeshelp.core.utils.CryptoUtils;
 import ru.ekbtreeshelp.core.entity.RefreshToken;
 import ru.ekbtreeshelp.core.entity.User;
 import ru.ekbtreeshelp.core.repository.RefreshTokenRepository;
