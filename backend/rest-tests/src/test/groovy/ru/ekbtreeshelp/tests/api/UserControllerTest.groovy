@@ -42,6 +42,19 @@ class UserControllerTest extends ApiTest {
                 .body('id', equalTo(userInfo.id))
     }
 
+    @Test
+    void testUpdateUser() {
+        Map<String, Object> userInfoBeforeUpdate = getCurrentUserInfo()
+        Long userId = userInfoBeforeUpdate.id as Long
+
+        String nameAfterUpdate = 'afterUpdate'
+        put("/api/user/${userId}", [firstName: nameAfterUpdate])
+
+        Map<String, Object> userInfoAfterUpdate = getCurrentUserInfo()
+
+        assert nameAfterUpdate == userInfoAfterUpdate.firstName
+    }
+
     private static Map<String, Object> getCurrentUserInfo() {
         return (new JsonSlurper().parseText(get('/api/user').asString()) as Map<String, Object>)
     }
