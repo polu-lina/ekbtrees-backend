@@ -205,4 +205,11 @@ class TreeControllerTest extends ApiTest {
                 .statusCode(200)
                 .body('species?.id as Long', equalTo(newSpeciesId))
     }
+
+    @Test
+    void testWrongTreeIdThrows404() {
+        get("/api/tree/get/9876543210")
+                .then()
+                .statusCode(404)
+    }
 }
