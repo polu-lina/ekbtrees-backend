@@ -26,6 +26,7 @@ public class UserService {
         userConverter.updateUserFromDto(updateUserDto, user);
     }
 
+    @Transactional
     public void updatePassword(User user, String newPassword) {
         user.setPassword(cryptoUtils.sha256WithSalt(newPassword));
         userRepository.save(user);
