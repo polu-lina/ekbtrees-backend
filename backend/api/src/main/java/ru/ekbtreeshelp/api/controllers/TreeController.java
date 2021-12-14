@@ -69,7 +69,7 @@ public class TreeController {
     @PreAuthorize("isAuthenticated()")
     public List<TreeDto> get() {
         Long authorId = securityService.getCurrentUserId();
-        return treeService.getAllByAuthorId(authorId).stream().map(treeConverter::toDto).collect(Collectors.toList());
+        return treeService.getAllByAuthorId(authorId, 1, 20).stream().map(treeConverter::toDto).collect(Collectors.toList());
     }
 
     @Operation(summary = "Удаляет дерево по id")
@@ -106,6 +106,42 @@ public class TreeController {
     @PreAuthorize("isAuthenticated()")
     public Long attachFile(@PathVariable Long treeId, @RequestParam("file") MultipartFile file) {
         return treeService.attachFile(treeId, file);
+    }
+
+    @GetMapping("/getAllByAuthorId/{authorId}/{page}/{size}")
+    @PreAuthorize("permitAll()")
+    List<TreeDto> getAllByAuthorId(@PathVariable("authorId") Long authorId, @PathVariable("page") Integer page, @PathVariable("size") Integer size)
+    {
+        return treeService.getAllByAuthorId(authorId, page, size).stream()
+                .map(treeConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getAllByAuthorId/{authorId}")
+    @PreAuthorize("permitAll()")
+    List<TreeDto> getAllByAuthorId(@PathVariable Long authorId)
+    {
+        return treeService.getAllByAuthorId(authorId, 1, 20).stream()
+                .map(treeConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getAll/{page}/{page}/{size}")
+    @PreAuthorize("permitAll()")
+    List<TreeDto> getAll(@PathVariable("page") Integer page, @PathVariable("size") Integer size)
+    {
+        return treeService.listAll(page, size).stream()
+                .map(treeConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getAll")
+    @PreAuthorize("permitAll()")
+    List<TreeDto> getAll()
+    {
+        return treeService.listAll(1, 20).stream()
+                .map(treeConverter::toDto)
+                .collect(Collectors.toList());
     }
 
 }

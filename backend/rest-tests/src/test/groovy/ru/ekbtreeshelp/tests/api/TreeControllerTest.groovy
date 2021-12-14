@@ -1,5 +1,6 @@
 package ru.ekbtreeshelp.tests.api
 
+import groovy.json.JsonSlurper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ru.ekbtreeshelp.tests.data.TestContext
@@ -204,6 +205,29 @@ class TreeControllerTest extends ApiTest {
                 .then()
                 .statusCode(200)
                 .body('species?.id as Long', equalTo(newSpeciesId))
+    }
+
+    @Test
+    void testGetAllTrees() {
+        get("/api/tree/getAll").then()
+                .statusCode(200)
+                .body(not(null))
+    }
+
+    @Test
+    void testGetAllTreesByAuthorId() {
+        Map<String, Object> userInfo = getCurrentUserInfo()
+        testContext.user = null
+        var treeId = createTree()
+
+        get("/api/tree/getAllByAuthorId/${ userInfo.id }")
+                .then()
+                .statusCode(200)
+                .body("find { it.id == ${ treeId } }", not(null))
+    }
+
+    private static Map<String, Object> getCurrentUserInfo() {
+        return (new JsonSlurper().parseText(get('/api/user').asString()) as Map<String, Object>)
     }
 
     @Test
