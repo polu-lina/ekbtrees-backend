@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import ru.ekbtreeshelp.api.converter.TreeConverter;
 import ru.ekbtreeshelp.api.dto.CreateTreeDto;
 import ru.ekbtreeshelp.api.dto.UpdateTreeDto;
@@ -20,6 +21,7 @@ import ru.ekbtreeshelp.api.service.TreeService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -46,7 +48,11 @@ public class TreeController {
     @GetMapping("/get/{id}")
     @PreAuthorize("permitAll()")
     public TreeDto get(@PathVariable Long id) {
-        return treeConverter.toDto(treeService.get(id));
+        try {
+            return treeConverter.toDto(treeService.get(id));
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @Operation(summary = "Редактирует существующее дерево")

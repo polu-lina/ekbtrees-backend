@@ -65,6 +65,17 @@ public class TokensService {
         return generateNewTokens(user);
     }
 
+    public void deleteTokens(String accessToken, String refreshToken) throws InvalidCredentialsException {
+        User userFromAccessToken = jwtService.extractUser(accessToken, false);
+        User userFromRefreshToken = jwtService.extractUser(refreshToken, true);
+
+        if (!userFromAccessToken.getId().equals(userFromRefreshToken.getId())) {
+            throw new InvalidCredentialsException("Suspicious delete tokens request");
+        }
+
+        refreshTokenRepository.deleteByTokenAndUser(refreshToken, userFromRefreshToken);
+    }
+
     private InvalidCredentialsException invalidLoginOrPassword() {
         return new InvalidCredentialsException("Invalid login and/or password");
     }

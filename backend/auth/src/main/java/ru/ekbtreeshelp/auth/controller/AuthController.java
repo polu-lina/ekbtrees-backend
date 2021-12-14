@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.ekbtreeshelp.auth.constants.CookieNames;
 import ru.ekbtreeshelp.auth.dto.NewUserDto;
 import ru.ekbtreeshelp.auth.service.TokensService;
 import ru.ekbtreeshelp.auth.service.UserService;
@@ -48,11 +49,24 @@ public class AuthController {
 
     @Operation(summary = "Получение новой пары Cookie (AccessToken, RefreshToken) по старому RefreshToken")
     @PostMapping("/newTokens")
-    public void newToken(@CookieValue(value = "RefreshToken") String oldRefreshToken, HttpServletResponse response) {
+    public void newToken(@CookieValue(CookieNames.REFRESH_TOKEN) String oldRefreshToken, HttpServletResponse response) {
         try {
             CookieUtils.setTokenCookies(response, tokensService.getTokensByRefreshToken(oldRefreshToken));
         } catch (InvalidCredentialsException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
         }
+    }
+
+    @Operation(summary = "Производит необходимые действия для выхода пользователя из системы")
+    @PostMapping("/logout")
+    public void logout(@CookieValue(CookieNames.ACCESS_TOKEN) String accessToken,
+                       @CookieValue(CookieNames.REFRESH_TOKEN) String refreshToken,
+                       HttpServletResponse response) {
+        try {
+            tokensService.deleteTokens(accessToken, refreshToken);
+        } catch (InvalidCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
+        }
+        CookieUtils.removeCookies(response, CookieNames.ACCESS_TOKEN, CookieNames.REFRESH_TOKEN);
     }
 }
