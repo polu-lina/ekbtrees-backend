@@ -3,6 +3,8 @@ package ru.ekbtreeshelp.auth.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.auth.InvalidCredentialsException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,8 @@ import java.util.Base64;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+
+    private static final Logger LOG = LogManager.getLogger(AuthController.class);
 
     private final UserService userService;
     private final TokensService tokensService;
@@ -43,6 +47,7 @@ public class AuthController {
         try {
             CookieUtils.setTokenCookies(response, tokensService.getTokensByCredentials(email, password));
         } catch (InvalidCredentialsException e) {
+            LOG.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
         }
     }
@@ -53,6 +58,7 @@ public class AuthController {
         try {
             CookieUtils.setTokenCookies(response, tokensService.getTokensByRefreshToken(oldRefreshToken));
         } catch (InvalidCredentialsException e) {
+            LOG.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
         }
     }
@@ -65,6 +71,7 @@ public class AuthController {
         try {
             tokensService.deleteTokens(accessToken, refreshToken);
         } catch (InvalidCredentialsException e) {
+            LOG.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
         }
         CookieUtils.removeCookies(response, CookieNames.ACCESS_TOKEN, CookieNames.REFRESH_TOKEN);
