@@ -1,6 +1,7 @@
 package ru.ekbtreeshelp.api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -76,15 +77,12 @@ public class TreeService {
 
     public List<Tree> getAllByAuthorId(Long authorId, Integer pageNumber, Integer step) {
         var page = PageRequest.of(pageNumber, step, Sort.by("creationDate"));
-        var listTree = treeRepository.findAllByAuthorId(authorId, page);
-        return new ArrayList<>(listTree);
+        return treeRepository.findAllByAuthorId(authorId, page);
     }
 
-    public List<Tree> listAll(Integer pageNumber, Integer step) {
+    public Page<Tree> listAll(Integer pageNumber, Integer step) {
         var page = PageRequest.of(pageNumber, step, Sort.by("creationDate"));
-        var listAll = treeRepository.findAll(page);
-        return listAll.stream()
-                .collect(Collectors.toList());
+        return treeRepository.findAll(page);
     }
 
     public void delete(Long id) {

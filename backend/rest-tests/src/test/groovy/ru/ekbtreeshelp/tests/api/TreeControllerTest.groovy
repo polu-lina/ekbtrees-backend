@@ -209,16 +209,19 @@ class TreeControllerTest extends ApiTest {
 
     @Test
     void testGetAllTrees() {
+        var treeId = createTree()
+        testContext.user = null
+
         get("/api/tree/getAll").then()
                 .statusCode(200)
-                .body(not(null))
+                .body("find { it.id == ${ treeId } }", not(null))
     }
 
     @Test
     void testGetAllTreesByAuthorId() {
         Map<String, Object> userInfo = getCurrentUserInfo()
-        testContext.user = null
         var treeId = createTree()
+        testContext.user = null
 
         get("/api/tree/getAllByAuthorId/${ userInfo.id }")
                 .then()

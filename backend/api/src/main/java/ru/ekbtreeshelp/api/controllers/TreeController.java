@@ -110,38 +110,36 @@ public class TreeController {
 
     @GetMapping("/getAllByAuthorId/{authorId}/{page}/{size}")
     @PreAuthorize("permitAll()")
-    List<TreeDto> getAllByAuthorId(@PathVariable("authorId") Long authorId, @PathVariable("page") Integer page, @PathVariable("size") Integer size)
+    List<TreeDto> getAllByAuthorId(@PathVariable Long authorId, @PathVariable Integer page, @PathVariable Integer size)
     {
         return treeService.getAllByAuthorId(authorId, page, size).stream()
                 .map(treeConverter::toDto)
                 .collect(Collectors.toList());
     }
 
+    @Deprecated
     @GetMapping("/getAllByAuthorId/{authorId}")
     @PreAuthorize("permitAll()")
     List<TreeDto> getAllByAuthorId(@PathVariable Long authorId)
     {
-        return treeService.getAllByAuthorId(authorId, 1, 20).stream()
-                .map(treeConverter::toDto)
-                .collect(Collectors.toList());
+        return getAllByAuthorId(authorId, 1, 20);
     }
 
-    @GetMapping("/getAll/{page}/{page}/{size}")
+    @GetMapping("/getAll/{page}/{size}")
     @PreAuthorize("permitAll()")
-    List<TreeDto> getAll(@PathVariable("page") Integer page, @PathVariable("size") Integer size)
+    List<TreeDto> getAll(@PathVariable Integer page, @PathVariable Integer size)
     {
         return treeService.listAll(page, size).stream()
                 .map(treeConverter::toDto)
                 .collect(Collectors.toList());
     }
 
+    @Deprecated
     @GetMapping("/getAll")
     @PreAuthorize("permitAll()")
     List<TreeDto> getAll()
     {
-        return treeService.listAll(1, 20).stream()
-                .map(treeConverter::toDto)
-                .collect(Collectors.toList());
+        return getAll(1 , 20);
     }
 
 }
