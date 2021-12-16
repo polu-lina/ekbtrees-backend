@@ -1,6 +1,9 @@
 package ru.ekbtreeshelp.api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,9 +17,11 @@ import ru.ekbtreeshelp.core.repository.FileRepository;
 import ru.ekbtreeshelp.core.repository.SpeciesTreeRepository;
 import ru.ekbtreeshelp.core.repository.TreeRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,8 +75,14 @@ public class TreeService {
         return treeRepository.findById(id).orElseThrow();
     }
 
-    public List<Tree> getAllByAuthorId(Long authorId) {
-        return treeRepository.findAllByAuthorId(authorId);
+    public List<Tree> getAllByAuthorId(Long authorId, Integer pageNumber, Integer step) {
+        var page = PageRequest.of(pageNumber, step, Sort.by("creationDate"));
+        return treeRepository.findAllByAuthorId(authorId, page);
+    }
+
+    public Page<Tree> listAll(Integer pageNumber, Integer step) {
+        var page = PageRequest.of(pageNumber, step, Sort.by("creationDate"));
+        return treeRepository.findAll(page);
     }
 
     public void delete(Long id) {
