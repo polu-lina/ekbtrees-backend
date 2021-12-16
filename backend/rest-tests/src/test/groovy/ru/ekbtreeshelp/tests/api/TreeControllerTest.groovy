@@ -1,5 +1,6 @@
 package ru.ekbtreeshelp.tests.api
 
+import groovy.json.JsonSlurper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ru.ekbtreeshelp.tests.data.TestContext
@@ -207,9 +208,58 @@ class TreeControllerTest extends ApiTest {
     }
 
     @Test
+    void testGetAllTrees() {
+        var treeId = createTree()
+        testContext.user = null
+
+        get("/api/tree/getAll").then()
+                .statusCode(200)
+                .body("find { it.id == ${ treeId } }", not(null))
+    }
+
+    @Test
+    void testGetAllTreesByAuthorId() {
+        Map<String, Object> userInfo = getCurrentUserInfo()
+        var treeId = createTree()
+        testContext.user = null
+
+        get("/api/tree/getAllByAuthorId/${ userInfo.id }")
+                .then()
+                .statusCode(200)
+                .body("find { it.id == ${ treeId } }", not(null))
+    }
+
+    private static Map<String, Object> getCurrentUserInfo() {
+        return (new JsonSlurper().parseText(get('/api/user').asString()) as Map<String, Object>)
+    }
+
+    @Test
     void testWrongTreeIdThrows404() {
         get("/api/tree/get/9876543210")
                 .then()
                 .statusCode(404)
+    }
+
+    @Test
+    void testCreateTreeWithOnlyRequiredParams() {
+        Map<String, Object> body = [age                   : null,
+                                    conditionAssessment   : null,
+                                    diameterOfCrown       : null,
+                                    fileIds               : [],
+                                    geographicalPoint     : [
+                                            latitude : 55.5,
+                                            longitude: 55.5
+                                    ],
+                                    heightOfTheFirstBranch: null,
+                                    numberOfTreeTrunks    : null,
+                                    speciesId             : null,
+                                    status                : null,
+                                    treeHeight            : null,
+                                    treePlantingType      : null,
+                                    trunkGirth            : null]
+
+        sendCreateTreeRequest(body)
+                .then()
+                .statusCode(201)
     }
 }
