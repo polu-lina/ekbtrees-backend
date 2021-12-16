@@ -239,4 +239,27 @@ class TreeControllerTest extends ApiTest {
                 .then()
                 .statusCode(404)
     }
+
+    @Test
+    void testCreateTreeWithOnlyRequiredParams() {
+        Map<String, Object> body = [age                   : null,
+                                    conditionAssessment   : null,
+                                    diameterOfCrown       : null,
+                                    fileIds               : [],
+                                    geographicalPoint     : [
+                                            latitude : 55.5,
+                                            longitude: 55.5
+                                    ],
+                                    heightOfTheFirstBranch: null,
+                                    numberOfTreeTrunks    : null,
+                                    speciesId             : null,
+                                    status                : null,
+                                    treeHeight            : null,
+                                    treePlantingType      : null,
+                                    trunkGirth            : null]
+
+        sendCreateTreeRequest(body)
+                .then()
+                .statusCode(201)
+    }
 }

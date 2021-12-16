@@ -20,6 +20,9 @@ import ru.ekbtreeshelp.api.service.SecurityService;
 import ru.ekbtreeshelp.api.service.TreeService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -63,13 +66,30 @@ public class TreeController {
         treeService.update(id, updateTreeDto);
     }
 
+    @Deprecated
     @Operation(summary = "Предоставляет деревья текущего пользователя")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/get")
     @PreAuthorize("isAuthenticated()")
     public List<TreeDto> get() {
         Long authorId = securityService.getCurrentUserId();
-        return treeService.getAllByAuthorId(authorId, 1, 20).stream().map(treeConverter::toDto).collect(Collectors.toList());
+        return treeService.getAllByAuthorId(authorId, 0, 20)
+                .stream()
+                .map(treeConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Operation(summary = "Предоставляет деревья текущего пользователя")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/get/{page}/{size}")
+    @PreAuthorize("isAuthenticated()")
+    public List<TreeDto> getCurrentUserTrees(@PathVariable @Min(0) Integer page,
+                                             @PathVariable @Max(100) Integer size) {
+        Long authorId = securityService.getCurrentUserId();
+        return treeService.getAllByAuthorId(authorId, page, size)
+                .stream()
+                .map(treeConverter::toDto)
+                .collect(Collectors.toList());
     }
 
     @Operation(summary = "Удаляет дерево по id")
@@ -110,7 +130,9 @@ public class TreeController {
 
     @GetMapping("/getAllByAuthorId/{authorId}/{page}/{size}")
     @PreAuthorize("permitAll()")
-    List<TreeDto> getAllByAuthorId(@PathVariable Long authorId, @PathVariable Integer page, @PathVariable Integer size)
+    List<TreeDto> getAllByAuthorId(@PathVariable @NotNull Long authorId,
+                                   @PathVariable @Min(0) Integer page,
+                                   @PathVariable @Max(100) Integer size)
     {
         return treeService.getAllByAuthorId(authorId, page, size).stream()
                 .map(treeConverter::toDto)
@@ -122,12 +144,13 @@ public class TreeController {
     @PreAuthorize("permitAll()")
     List<TreeDto> getAllByAuthorId(@PathVariable Long authorId)
     {
-        return getAllByAuthorId(authorId, 1, 20);
+        return getAllByAuthorId(authorId, 0, 20);
     }
 
     @GetMapping("/getAll/{page}/{size}")
     @PreAuthorize("permitAll()")
-    List<TreeDto> getAll(@PathVariable Integer page, @PathVariable Integer size)
+    List<TreeDto> getAll(@PathVariable @Min(0) Integer page,
+                         @PathVariable @Max(100) Integer size)
     {
         return treeService.listAll(page, size).stream()
                 .map(treeConverter::toDto)
@@ -139,7 +162,7 @@ public class TreeController {
     @PreAuthorize("permitAll()")
     List<TreeDto> getAll()
     {
-        return getAll(1 , 20);
+        return getAll(0 , 20);
     }
 
 }

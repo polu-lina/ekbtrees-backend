@@ -17,11 +17,9 @@ import ru.ekbtreeshelp.core.repository.FileRepository;
 import ru.ekbtreeshelp.core.repository.SpeciesTreeRepository;
 import ru.ekbtreeshelp.core.repository.TreeRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,14 +34,19 @@ public class TreeService {
 
     @Transactional
     public Long create(CreateTreeDto createTreeDto) {
-        Optional<SpeciesTree> speciesTree = speciesTreeRepository.findById(createTreeDto.getSpeciesId());
-        if(speciesTree.isEmpty()) {
-            throw new IllegalArgumentException("Species not found");
+        Long speciesId = createTreeDto.getSpeciesId();
+        SpeciesTree speciesTree = null;
+        if (speciesId != null) {
+            Optional<SpeciesTree> speciesTreeOptional = speciesTreeRepository.findById(speciesId);
+            if(speciesTreeOptional.isEmpty()) {
+                throw new IllegalArgumentException("Species not found");
+            }
+            speciesTree = speciesTreeOptional.get();
         }
 
         Tree treeEntity = treeConverter.fromDto(createTreeDto);
 
-        return createTree(createTreeDto.getFileIds(), speciesTree.get(), treeEntity);
+        return createTree(createTreeDto.getFileIds(), speciesTree, treeEntity);
     }
 
     @Transactional
@@ -76,12 +79,12 @@ public class TreeService {
     }
 
     public List<Tree> getAllByAuthorId(Long authorId, Integer pageNumber, Integer step) {
-        var page = PageRequest.of(pageNumber, step, Sort.by("creationDate"));
+        var page = PageRequest.of(pageNumber, step, Sort.by("id").descending());
         return treeRepository.findAllByAuthorId(authorId, page);
     }
 
     public Page<Tree> listAll(Integer pageNumber, Integer step) {
-        var page = PageRequest.of(pageNumber, step, Sort.by("creationDate"));
+        var page = PageRequest.of(pageNumber, step, Sort.by("id").descending());
         return treeRepository.findAll(page);
     }
 
