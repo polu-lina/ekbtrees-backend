@@ -34,11 +34,9 @@ public class JWTFilter extends GenericFilterBean {
             JWTUserDetails userDetails;
             try {
                 userDetails = jwtProvider.getUserDetailsFromToken(token);
-            } catch (MalformedJwtException | UnsupportedJwtException | SignatureException | ExpiredJwtException e) {
+            } catch (MalformedJwtException | UnsupportedJwtException | SignatureException | ExpiredJwtException |
+                    IllegalArgumentException e) {
                 ((HttpServletResponse)response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            } catch (IllegalArgumentException e) {
-                ((HttpServletResponse)response).sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
             UsernamePasswordAuthenticationToken authentication =

@@ -27,38 +27,52 @@ class CommentControllerTest extends ApiTest {
 
     @Test
     void testAddComment() {
-        sendCreateTreeRequest()
-                .then()
-                .statusCode(201)
+        addComment(createTree())
     }
 
     @Test
     void testGetCommentsByTreeId() {
         Long newTreeId = createTree()
-        addComment(newTreeId)
+        Long newCommentId = addComment(newTreeId)
 
-        get("/api/comment/get-all/${ newTreeId }")
+        get("/api/comment/by-tree/${ newTreeId }")
                 .then()
                 .statusCode(200)
-                .body('find { it.id }', not(null))
+                .body("find { it.id == ${ newCommentId } }", not(null))
+    }
+
+    @Test
+    void testUpdateComment() {
+        Long newTreeId = createTree()
+        Long newCommentId = addComment(newTreeId)
+
+        String newText = 'newText'
+        put("/api/comment/${ newCommentId }", [text: newText])
+                .then()
+                .statusCode(200)
+
+        get("/api/comment/by-tree/${ newTreeId }")
+                .then()
+                .statusCode(200)
+                .body("find { it.id == ${ newCommentId } }?.text", equalTo(newText))
     }
 
     @Test
     void testDeleteComment() {
-        Long newCommentId = addComment()
+        Long newCommentId = addComment(createTree())
 
-        delete("/api/comment/delete/${ newCommentId }")
+        delete("/api/comment/${ newCommentId }")
                 .then()
                 .statusCode(200)
     }
 
-    private static Response sendAddCommentRequest(Long treeId = null) {
+    private static Response sendAddCommentRequest(Long treeId) {
         Long newTreeId = treeId ?: createTree()
 
-        return post('/api/comment/save', [text: 'comment', treeId: newTreeId])
+        return post('/api/comment', [text: 'comment', treeId: newTreeId])
     }
 
-    private static Long addComment(Long treeId = null) {
+    private static Long addComment(Long treeId) {
 
         Response response = sendAddCommentRequest(treeId)
 
