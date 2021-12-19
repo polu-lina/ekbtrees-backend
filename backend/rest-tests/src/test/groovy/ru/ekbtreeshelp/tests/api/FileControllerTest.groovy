@@ -31,7 +31,7 @@ class FileControllerTest extends ApiTest {
 
         sendUploadFileRequest()
                 .then()
-                .statusCode(403)
+                .statusCode(401)
     }
 
     @Test

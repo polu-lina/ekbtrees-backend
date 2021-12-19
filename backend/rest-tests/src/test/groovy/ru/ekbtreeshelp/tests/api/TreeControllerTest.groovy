@@ -81,7 +81,9 @@ class TreeControllerTest extends ApiTest {
     void testUnauthenticatedUserCantAddTree() {
         testContext.user = null
 
-        sendCreateTreeRequest().then().statusCode(403)
+        sendCreateTreeRequest()
+                .then()
+                .statusCode(401)
     }
 
     @Test

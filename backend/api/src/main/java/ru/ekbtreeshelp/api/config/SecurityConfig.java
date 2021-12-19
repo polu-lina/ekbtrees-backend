@@ -17,14 +17,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JWTFilter jwtFilter;
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .httpBasic()
+                    .disable()
+                .csrf()
+                    .disable()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .anyRequest().permitAll() // используется GlobalMethodSecurity
+                    .anyRequest().permitAll() // используется GlobalMethodSecurity
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
