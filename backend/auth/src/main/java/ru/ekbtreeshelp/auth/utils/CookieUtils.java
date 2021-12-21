@@ -14,12 +14,12 @@ public class CookieUtils {
         Cookie accessTokenCookie = new Cookie(CookieNames.ACCESS_TOKEN, tokens.getAccessToken());
         accessTokenCookie.setHttpOnly(false);
         accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(Math.toIntExact(AuthConstants.ACCESS_TOKEN_MAX_AGE));
+        accessTokenCookie.setMaxAge(Math.toIntExact(AuthConstants.ACCESS_TOKEN_COOKIE_MAX_AGE));
         response.addCookie(accessTokenCookie);
         Cookie refreshTokenCookie = new Cookie(CookieNames.REFRESH_TOKEN, tokens.getRefreshToken());
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(Math.toIntExact(AuthConstants.REFRESH_TOKEN_MAX_AGE));
+        refreshTokenCookie.setMaxAge(Math.toIntExact(AuthConstants.REFRESH_TOKEN_COOKIE_MAX_AGE));
         response.addCookie(refreshTokenCookie);
     }
 
