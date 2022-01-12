@@ -17,7 +17,7 @@ public class CommentDto {
     private Long id;
 
     @Schema(description = "Дата и время добавления комментария")
-    private Instant created;
+    private Long created;
 
     @Schema(description = "Ссылка на автора")
     private Long authorId;
@@ -25,6 +25,6 @@ public class CommentDto {
     @Schema(description = "Текст комментария")
     private String text;
 
-    @Schema(description = "Идентификатор дерева, к которому относиться комментарий")
+    @Schema(description = "Идентификатор дерева, к которому относится комментарий")
     private Long treeId;
 }

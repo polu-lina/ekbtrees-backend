@@ -68,4 +68,8 @@ public abstract class TreeMapper {
         tree.setId(id);
         return tree;
     }
+
+    public Long toId(Tree tree) {
+        return tree != null ? tree.getId() : null;
+    }
 }
