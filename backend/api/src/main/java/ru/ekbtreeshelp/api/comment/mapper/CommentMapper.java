@@ -7,17 +7,24 @@ import ru.ekbtreeshelp.api.comment.dto.CommentDto;
 import ru.ekbtreeshelp.api.comment.dto.CreateCommentDto;
 import ru.ekbtreeshelp.api.comment.dto.UpdateCommentDto;
 import ru.ekbtreeshelp.api.tree.mapper.TreeMapper;
+import ru.ekbtreeshelp.api.user.mapper.UserMapper;
+import ru.ekbtreeshelp.api.util.mapper.DatesMapper;
 import ru.ekbtreeshelp.core.entity.Comment;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring",
         uses = {
-               TreeMapper.class
+                TreeMapper.class,
+                DatesMapper.class,
+                UserMapper.class
         }
 )
 public interface CommentMapper {
 
+    @Mapping(source = "tree", target = "treeId")
+    @Mapping(source = "creationDate", target = "created")
+    @Mapping(source = "author", target = "authorId")
     CommentDto toDto(Comment comment);
 
     List<CommentDto> toDto(List<Comment> comments);

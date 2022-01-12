@@ -12,11 +12,18 @@ import ru.ekbtreeshelp.core.entity.User;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface UserMapper {
+
     UserDto toDto(User user);
+
     void updateUserFromDto(UpdateUserDto updateUserDto, @MappingTarget User user);
+
     default User fromId(Long id) {
         User user = new User();
         user.setId(id);
         return user;
+    }
+
+    default Long toId(User user) {
+        return user != null ? user.getId() : null;
     }
 }

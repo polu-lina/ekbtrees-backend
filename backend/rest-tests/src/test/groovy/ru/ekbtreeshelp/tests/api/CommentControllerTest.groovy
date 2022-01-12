@@ -38,7 +38,7 @@ class CommentControllerTest extends ApiTest {
         get("/api/comment/by-tree/${ newTreeId }")
                 .then()
                 .statusCode(200)
-                .body("find { it.id == ${ newCommentId } }", not(null))
+                .body("find { it.id == ${ newCommentId } }?.treeId as Long", equalTo(newTreeId))
     }
 
     @Test
