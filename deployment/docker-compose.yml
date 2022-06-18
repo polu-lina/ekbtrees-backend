@@ -21,8 +21,9 @@ services:
       DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
       SHOW_SQL: "true"
       JAVA_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
+      SERVER_PORT: 8085
     ports:
-      - "8081:8081"
+      - "8085:8085"
       - "5006:5006"
     depends_on:
       - postgres
