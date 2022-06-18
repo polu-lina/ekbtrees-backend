@@ -15,6 +15,9 @@ import ru.ekbtreeshelp.api.security.service.SecurityService;
 import ru.ekbtreeshelp.api.user.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.util.List;
 
 @Tag(name = "Операции с пользователями")
 @Validated
@@ -58,5 +61,16 @@ public class UserController {
     @Operation(summary = "Редактирует пароль текущего пользователя")
     public void updatePassword(@RequestBody @Valid UpdateUserPasswordDto updateUserPasswordDto) {
         userService.updatePassword(securityService.getCurrentUser(), updateUserPasswordDto.getNewPassword());
+    }
+
+    @SecurityRequirement(name = "jwt")
+    @GetMapping("/getAll/{page}/{size}")
+    @PreAuthorize("hasAnyAuthority(@Roles.SUPERUSER, @Roles.MODERATOR)")
+    @Operation(summary = "Получение списка всех пользователей")
+    public List<UserDto> listAll(@PathVariable @Min(0) Integer page,
+                                 @PathVariable @Min(1) @Max(100) Integer size) {
+        return userService.listAll(page, size).stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 }

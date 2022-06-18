@@ -82,6 +82,22 @@ class UserControllerTest extends ApiTest {
 
     }
 
+    @Test
+    void testListAllUsersReturns403WhenNotAdmin() {
+        100.times {
+            String email = "${UUID.randomUUID()}@test.mail"
+            TestUser user = new TestUser(
+                    email: email,
+                    password: 'volunteer'
+            )
+            createUser(user)
+        }
+
+        get("/api/user/getAll/1/100")
+                .then()
+                .statusCode(403)
+    }
+
     private static Map<String, Object> getCurrentUserInfo() {
         return (new JsonSlurper().parseText(get('/api/user').asString()) as Map<String, Object>)
     }

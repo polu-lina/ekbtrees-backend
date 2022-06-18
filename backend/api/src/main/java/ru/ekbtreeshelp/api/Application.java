@@ -24,6 +24,9 @@ import ru.ekbtreeshelp.core.SpringComponentScanHelper;
         servers = {
                 @Server(
                         url = "https://ekb-trees-help.ru/"
+                ),
+                @Server(
+                        url = "http://127.0.0.1:8080/"
                 )
         }
 )

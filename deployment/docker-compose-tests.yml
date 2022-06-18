@@ -19,10 +19,11 @@ services:
     environment:
       DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
       JAVA_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
+      SERVER_PORT: 8085
     depends_on:
       - postgres
     ports:
-      - "8081:8081"
+      - "8085:8085"
       - "5006:5006"
 
   postgres:
@@ -46,7 +47,7 @@ services:
       API_BASE_URI: "http://api"
       API_PORT: "8080"
       AUTH_BASE_URI: "http://auth"
-      AUTH_PORT: "8081"
+      AUTH_PORT: "8085"
     depends_on:
       - api
       - auth

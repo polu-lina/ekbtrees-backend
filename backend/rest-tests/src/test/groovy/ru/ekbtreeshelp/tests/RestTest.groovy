@@ -37,7 +37,7 @@ abstract class RestTest {
         apiServiceBaseUri = envApiUri ?: "http://localhost"
         apiServicePort = envApiPort != null ? Integer.parseInt(envApiPort) : 8080
         authServiceBaseUri = envAuthUri ?: "http://localhost"
-        authServicePort = envAuthPort != null ? Integer.parseInt(envAuthPort) : 8081
+        authServicePort = envAuthPort != null ? Integer.parseInt(envAuthPort) : 8085
     }
 
     protected static Response get(String path) {
