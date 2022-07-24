@@ -70,4 +70,7 @@ public class TreeDto {
     @Schema(description = "Флаг возможности удаления дерева текущим пользователем")
     private boolean deletable;
 
+    @Schema(description = "Флаг наличия подтверждения дерева модератором")
+    private boolean approvedByModerator;
+
 }

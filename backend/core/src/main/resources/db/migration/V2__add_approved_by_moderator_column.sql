@@ -1,0 +1,2 @@
+ALTER TABLE trees
+    ADD COLUMN approved_by_moderator BOOLEAN NOT NULL DEFAULT FALSE;

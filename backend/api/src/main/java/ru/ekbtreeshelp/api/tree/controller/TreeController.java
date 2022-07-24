@@ -178,4 +178,11 @@ public class TreeController {
         return getAll(0 , 20);
     }
 
+    @Operation(summary = "Подтверждение дерева модератором")
+    @PostMapping("/approve/{treeId}")
+    @PreAuthorize("hasAnyAuthority(@Roles.MODERATOR, @Roles.SUPERUSER)")
+    void approve(@PathVariable Long treeId) {
+        treeService.approve(treeId);
+    }
+
 }

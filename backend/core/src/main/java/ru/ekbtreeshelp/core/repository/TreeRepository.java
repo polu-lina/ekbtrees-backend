@@ -46,4 +46,10 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
                                               Double bottomRightX, Double bottomRightY,
                                               Double clusterDistance, Integer srid);
 
+    @Query("""
+        UPDATE Tree
+        SET approvedByModerator = true
+        WHERE id = :treeId
+        """)
+    void approve(Long treeId);
 }

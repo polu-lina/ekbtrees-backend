@@ -87,4 +87,10 @@ public class Tree extends BaseEntity {
      * Статус дерева
      */
     private String status;
+
+    /**
+     * Флаг наличия подтверждения дерева модератором
+     */
+    @Column(name = "approved_by_moderator")
+    private boolean approvedByModerator;
 }

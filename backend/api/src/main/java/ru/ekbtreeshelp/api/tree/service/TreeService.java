@@ -99,4 +99,8 @@ public class TreeService {
         fileRepository.updateTreeId(createdFileId, treeId);
         return createdFileId;
     }
+
+    public void approve(Long treeId) {
+        treeRepository.approve(treeId);
+    }
 }

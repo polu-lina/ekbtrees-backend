@@ -264,4 +264,13 @@ class TreeControllerTest extends ApiTest {
                 .then()
                 .statusCode(201)
     }
+
+    @Test
+    void testApprove() {
+        Long newTreeId = createTree()
+
+        post("/api/tree/approve/${newTreeId}", [:])
+                .then()
+                .statusCode(403)
+    }
 }
