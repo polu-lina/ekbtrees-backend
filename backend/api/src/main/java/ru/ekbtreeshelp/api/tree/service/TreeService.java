@@ -12,9 +12,11 @@ import ru.ekbtreeshelp.api.security.service.SecurityService;
 import ru.ekbtreeshelp.api.tree.mapper.TreeMapper;
 import ru.ekbtreeshelp.api.tree.dto.CreateTreeDto;
 import ru.ekbtreeshelp.api.tree.dto.UpdateTreeDto;
+import ru.ekbtreeshelp.core.entity.BaseEntity;
 import ru.ekbtreeshelp.core.entity.FileEntity;
 import ru.ekbtreeshelp.core.entity.SpeciesTree;
 import ru.ekbtreeshelp.core.entity.Tree;
+import ru.ekbtreeshelp.core.repository.CommentRepository;
 import ru.ekbtreeshelp.core.repository.FileRepository;
 import ru.ekbtreeshelp.core.repository.SpeciesTreeRepository;
 import ru.ekbtreeshelp.core.repository.TreeRepository;
@@ -33,6 +35,7 @@ public class TreeService {
     private final FileService fileService;
     private final SpeciesTreeRepository speciesTreeRepository;
     private final SecurityService securityService;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Long create(CreateTreeDto createTreeDto) {
@@ -91,6 +94,9 @@ public class TreeService {
     }
 
     public void delete(Long id) {
+        commentRepository.findAllByTreeId(id)
+                .stream().map(BaseEntity::getId)
+                .forEach(treeRepository::deleteById);
         treeRepository.deleteById(id);
     }
 
