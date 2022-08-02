@@ -2,6 +2,7 @@ package ru.ekbtreeshelp.api.tree.mapper;
 
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.ekbtreeshelp.api.security.permissions.constants.Roles;
 import ru.ekbtreeshelp.api.util.mapper.DatesMapper;
 import ru.ekbtreeshelp.api.tree.dto.CreateTreeDto;
 import ru.ekbtreeshelp.api.tree.dto.TreeDto;
@@ -15,6 +16,9 @@ import ru.ekbtreeshelp.core.entity.FileEntity;
 import ru.ekbtreeshelp.core.entity.Tree;
 
 import java.util.stream.Collectors;
+
+import static ru.ekbtreeshelp.api.security.permissions.constants.Roles.MODERATOR;
+import static ru.ekbtreeshelp.api.security.permissions.constants.Roles.SUPERUSER;
 
 @Mapper(
         componentModel = "spring",
@@ -40,9 +44,10 @@ public abstract class TreeMapper {
 
     @AfterMapping
     protected void setRightsFlags(@MappingTarget TreeDto treeDto) {
-        treeDto.setDeletable(mainPermissionEvaluator.hasPermission(
+        var currentUserIsAdminOrModerator = securityService.currentUserHasAnyRole(MODERATOR, SUPERUSER);
+        treeDto.setDeletable(currentUserIsAdminOrModerator || mainPermissionEvaluator.hasPermission(
                 securityService.getCurrentAuth(), treeDto.getId(), Domains.TREE, Permissions.DELETE));
-        treeDto.setEditable(mainPermissionEvaluator.hasPermission(
+        treeDto.setEditable(currentUserIsAdminOrModerator || mainPermissionEvaluator.hasPermission(
                 securityService.getCurrentAuth(), treeDto.getId(), Domains.TREE, Permissions.EDIT));
     }
 

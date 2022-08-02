@@ -2,11 +2,15 @@ package ru.ekbtreeshelp.api.security.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.ekbtreeshelp.core.entity.User;
 import ru.ekbtreeshelp.core.repository.UserRepository;
 import ru.ekbtreeshelp.api.security.JWTUserDetails;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,14 @@ public class SecurityService {
 
     public Authentication getCurrentAuth() {
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public boolean currentUserHasAnyRole(String... roles) {
+        var currentRoles = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        return Arrays.stream(roles).anyMatch(currentRoles::contains);
     }
 
     public Long getCurrentUserId() {
