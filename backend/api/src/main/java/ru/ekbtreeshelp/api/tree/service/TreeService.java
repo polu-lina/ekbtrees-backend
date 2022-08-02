@@ -96,7 +96,7 @@ public class TreeService {
     public void delete(Long id) {
         commentRepository.findAllByTreeId(id)
                 .stream().map(BaseEntity::getId)
-                .forEach(treeRepository::deleteById);
+                .forEach(commentRepository::deleteById);
         treeRepository.deleteById(id);
     }
 
