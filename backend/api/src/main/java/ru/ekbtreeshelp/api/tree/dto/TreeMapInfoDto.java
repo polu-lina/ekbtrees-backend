@@ -23,4 +23,7 @@ public class TreeMapInfoDto {
     @Schema(description = "Порода дерева")
     private SpeciesTreeDto species;
 
+    @Schema(description = "Признак наличия подтверждения дерева модератором")
+    private boolean approvedByModerator;
+
 }
