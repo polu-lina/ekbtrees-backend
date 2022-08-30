@@ -2,6 +2,7 @@ package ru.ekbtreeshelp.core.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,7 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
                                               Double bottomRightX, Double bottomRightY,
                                               Double clusterDistance, Integer srid);
 
+    @Modifying
     @Query("""
         UPDATE Tree
         SET approvedByModerator = true
