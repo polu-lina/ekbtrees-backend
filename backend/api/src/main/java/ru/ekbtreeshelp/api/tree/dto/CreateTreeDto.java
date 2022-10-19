@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -33,11 +34,11 @@ public class CreateTreeDto {
     @Schema(description = "Число стволов (целое)")
     private Integer numberOfTreeTrunks;
 
-    @Min(1)
+    @Min(0)
     @Schema(description = "Обхват (самого толстого) ствола в сантиметрах")
     private Double trunkGirth;
 
-    @Min(1)
+    @Min(0)
     @Schema(description = "Диаметр кроны в метрах")
     private Double diameterOfCrown;
 
@@ -45,8 +46,7 @@ public class CreateTreeDto {
     @Schema(description = "Высота первой ветви от земли в метрах")
     private Double heightOfTheFirstBranch;
 
-    @Min(1)
-    @Max(5)
+    @Range(min = 1, max = 5)
     @Schema(description = "Визуальная оценка состояния (по шкале 1 до 5)")
     private Integer conditionAssessment;
 
