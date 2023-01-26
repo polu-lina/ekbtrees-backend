@@ -26,10 +26,10 @@ public class SpeciesTreeService {
                 return o1.getTitle().compareTo(o2.getTitle());
             }
             if (o1.getTitle().equals("Другое") || o1.getTitle().equals("Невозможно определить")) {
-                return 1;
+                return -1;
             }
             if (o2.getTitle().equals("Другое") || o2.getTitle().equals("Невозможно определить")) {
-                return -1;
+                return 1;
             }
             return o1.getTitle().compareTo(o2.getTitle());
         }).toList();
