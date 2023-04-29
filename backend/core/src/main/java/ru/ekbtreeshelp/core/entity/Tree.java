@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -93,4 +94,34 @@ public class Tree extends BaseEntity {
      */
     @Column(name = "approved_by_moderator")
     private boolean approvedByModerator;
+
+    /**
+     * Обрезка дерева
+     */
+    @Column(name = "pruning")
+    private String pruning;
+
+    /**
+     * Прикорневые условия
+     */
+    @Column(name = "root_condition")
+    private String rootCondition;
+
+    /**
+     * Состояние стволов
+     */
+    @Column(name = "trunk_states")
+    private Collection<String> trunkStates;
+
+    /**
+     * Состояние ветвей
+     */
+    @Column(name = "branch_states")
+    private Collection<String> branchStates;
+
+    /**
+     * Состояние коры
+     */
+    @Column(name = "cortical_states")
+    private Collection<String> corticalStates;
 }
