@@ -111,17 +111,17 @@ public class Tree extends BaseEntity {
      * Состояние стволов
      */
     @Column(name = "trunk_states")
-    private Collection<String> trunkStates;
+    private String trunkStates;
 
     /**
      * Состояние ветвей
      */
     @Column(name = "branch_states")
-    private Collection<String> branchStates;
+    private String branchStates;
 
     /**
      * Состояние коры
      */
     @Column(name = "cortical_states")
-    private Collection<String> corticalStates;
+    private String corticalStates;
 }

@@ -15,6 +15,7 @@ import ru.ekbtreeshelp.api.security.service.SecurityService;
 import ru.ekbtreeshelp.core.entity.FileEntity;
 import ru.ekbtreeshelp.core.entity.Tree;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static ru.ekbtreeshelp.api.security.permissions.constants.Roles.MODERATOR;
@@ -40,6 +41,9 @@ public abstract class TreeMapper {
     @Mapping(source = "geoPoint", target = "geographicalPoint")
     @Mapping(source = "creationDate", target = "created")
     @Mapping(source = "lastModificationDate", target = "updated")
+    @Mapping(target = "trunkStates", ignore = true)
+    @Mapping(target = "branchStates", ignore = true)
+    @Mapping(target = "corticalStates", ignore = true)
     public abstract TreeDto toDto(Tree tree);
 
     @AfterMapping
@@ -60,13 +64,58 @@ public abstract class TreeMapper {
                         .collect(Collectors.toList()));
     }
 
+    @AfterMapping
+    protected void setStates(Tree tree, @MappingTarget TreeDto treeDto) {
+        if (tree.getBranchStates() != null) {
+            treeDto.setBranchStates(Arrays.stream(tree.getBranchStates().split(";")).toList());
+        }
+        if (tree.getTrunkStates() != null) {
+            treeDto.setTrunkStates(Arrays.stream(tree.getTrunkStates().split(";")).toList());
+        }
+        if (tree.getCorticalStates() != null) {
+            treeDto.setCorticalStates(Arrays.stream(tree.getCorticalStates().split(";")).toList());
+        }
+    }
+
     @Mapping(source = "geographicalPoint", target = "geoPoint")
     @Mapping(source = "speciesId", target = "species")
+    @Mapping(target = "trunkStates", ignore = true)
+    @Mapping(target = "branchStates", ignore = true)
+    @Mapping(target = "corticalStates", ignore = true)
     public abstract Tree fromDto(CreateTreeDto createTreeDto);
+
+    @AfterMapping
+    protected void setStates(CreateTreeDto createTreeDto, @MappingTarget Tree tree) {
+        if (createTreeDto.getBranchStates() != null) {
+            tree.setBranchStates(String.join(";", createTreeDto.getBranchStates()));
+        }
+        if (createTreeDto.getCorticalStates() != null) {
+            tree.setCorticalStates(String.join(";", createTreeDto.getCorticalStates()));
+        }
+        if (createTreeDto.getTrunkStates() != null) {
+            tree.setTrunkStates(String.join(";", createTreeDto.getTrunkStates()));
+        }
+    }
 
     @Mapping(target = "geoPoint", source = "geographicalPoint")
     @Mapping(target = "species", source = "speciesId")
+    @Mapping(target = "trunkStates", ignore = true)
+    @Mapping(target = "branchStates", ignore = true)
+    @Mapping(target = "corticalStates", ignore = true)
     public abstract void updateTreeFromDto(UpdateTreeDto updateTreeDto, @MappingTarget Tree tree);
+
+    @AfterMapping
+    protected void setStates(UpdateTreeDto updateTreeDto, @MappingTarget Tree tree) {
+        if (updateTreeDto.getBranchStates() != null) {
+            tree.setBranchStates(String.join(";", updateTreeDto.getBranchStates()));
+        }
+        if (updateTreeDto.getCorticalStates() != null) {
+            tree.setCorticalStates(String.join(";", updateTreeDto.getCorticalStates()));
+        }
+        if (updateTreeDto.getTrunkStates() != null) {
+            tree.setTrunkStates(String.join(";", updateTreeDto.getTrunkStates()));
+        }
+    }
 
     public Tree fromId(Long id) {
         Tree tree = new Tree();
