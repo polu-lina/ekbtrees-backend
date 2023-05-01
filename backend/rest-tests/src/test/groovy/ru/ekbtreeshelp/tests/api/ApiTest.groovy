@@ -46,7 +46,21 @@ abstract class ApiTest extends RestTest {
                                     status                : 'alive',
                                     treeHeight            : 1,
                                     treePlantingType      : 'planting type',
-                                    trunkGirth            : 1]
+                                    trunkGirth            : 1,
+                                    pruning               : 'на столб',
+                                    rootCondition         : 'газон или почва',
+                                    trunkStates           : [
+                                            'отклонение больше 45 градусов',
+                                            'мертвые стволы'
+                                    ],
+                                    branchStates          : [
+                                            'мертвые ветки',
+                                            'опасно нависающие ветки'
+                                    ],
+                                    corticalStates        : [
+                                            'дупла', 'наросты'
+                                    ]
+        ]
 
         body << creationParamsOverride
 
@@ -68,7 +82,21 @@ abstract class ApiTest extends RestTest {
                                     status                : 'alive',
                                     treeHeight            : 1,
                                     treePlantingType      : 'planting type',
-                                    trunkGirth            : 1]
+                                    trunkGirth            : 1,
+                                    pruning               : 'на столб',
+                                    rootCondition         : 'газон или почва',
+                                    trunkStates           : [
+                                            'отклонение больше 45 градусов',
+                                            'мертвые стволы'
+                                    ],
+                                    branchStates          : [
+                                            'мертвые ветки',
+                                            'опасно нависающие ветки'
+                                    ],
+                                    corticalStates        : [
+                                            'дупла', 'наросты'
+                                    ]
+        ]
 
         post('/api/tree', body)
     }
