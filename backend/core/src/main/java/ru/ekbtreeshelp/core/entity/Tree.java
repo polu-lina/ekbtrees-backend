@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Getter
 @Setter
