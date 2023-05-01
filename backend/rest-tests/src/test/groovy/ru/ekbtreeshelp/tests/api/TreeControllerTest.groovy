@@ -258,12 +258,7 @@ class TreeControllerTest extends ApiTest {
                                     status                : null,
                                     treeHeight            : null,
                                     treePlantingType      : null,
-                                    trunkGirth            : null,
-                                    pruning               : null,
-                                    rootCondition         : null,
-                                    trunkStates           : null,
-                                    branchStates          : null,
-                                    corticalStates        : null]
+                                    trunkGirth            : null]
 
         sendCreateTreeRequest(body)
                 .then()

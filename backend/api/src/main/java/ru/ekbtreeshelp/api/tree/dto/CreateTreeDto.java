@@ -62,19 +62,4 @@ public class CreateTreeDto {
 
     @Schema(description = "Список идентификаторов файлов, связанных с деревом")
     private Collection<Long> fileIds;
-
-    @Schema(description = "Обрезка")
-    private String pruning;
-
-    @Schema(description = "Прикорневые условия")
-    private String rootCondition;
-
-    @Schema(description = "Состояние стволов")
-    private Collection<String> trunkStates;
-
-    @Schema(description = "Состояние ветвей")
-    private Collection<String> branchStates;
-
-    @Schema(description = "Состояние коры")
-    private Collection<String> corticalStates;
 }
