@@ -93,4 +93,34 @@ public class Tree extends BaseEntity {
      */
     @Column(name = "approved_by_moderator")
     private boolean approvedByModerator;
+
+    /**
+     * Обрезка дерева
+     */
+    @Column(name = "pruning")
+    private String pruning;
+
+    /**
+     * Прикорневые условия
+     */
+    @Column(name = "root_condition")
+    private String rootCondition;
+
+    /**
+     * Состояние стволов
+     */
+    @Column(name = "trunk_states")
+    private String trunkStates;
+
+    /**
+     * Состояние ветвей
+     */
+    @Column(name = "branch_states")
+    private String branchStates;
+
+    /**
+     * Состояние коры
+     */
+    @Column(name = "cortical_states")
+    private String corticalStates;
 }
