@@ -19,10 +19,10 @@ import static ru.ekbtreeshelp.auth.constants.SuperUserConstants.EMAIL;
 
 @Component
 @RequiredArgsConstructor
-public class StartupService {
+public class StartupServiceAuth {
 
     private final RoleRepository roleRepository;
-    private final UserService userService;
+    private final UserServiceAuth userService;
     private final SuperUserConfig superUserConfig;
 
     @EventListener

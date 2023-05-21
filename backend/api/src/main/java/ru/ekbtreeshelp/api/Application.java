@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import ru.ekbtreeshelp.auth.SpringComponentScanHelperAuth;
 import ru.ekbtreeshelp.core.SpringComponentScanHelper;
 
 @OpenAPIDefinition(
@@ -32,13 +33,13 @@ import ru.ekbtreeshelp.core.SpringComponentScanHelper;
 )
 @SecurityScheme(name = "jwt", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 @SpringBootApplication(
-        scanBasePackageClasses = { SpringComponentScanHelper.class, Application.class }
+        scanBasePackageClasses = { SpringComponentScanHelper.class, Application.class, SpringComponentScanHelperAuth.class }
 )
 @ConfigurationPropertiesScan(
-        basePackageClasses = { SpringComponentScanHelper.class, Application.class }
+        basePackageClasses = { SpringComponentScanHelper.class, Application.class, SpringComponentScanHelperAuth.class }
 )
-@EntityScan(basePackageClasses = { SpringComponentScanHelper.class, Application.class })
-@EnableJpaRepositories(basePackageClasses = { SpringComponentScanHelper.class, Application.class })
+@EntityScan(basePackageClasses = { SpringComponentScanHelper.class, Application.class, SpringComponentScanHelperAuth.class })
+@EnableJpaRepositories(basePackageClasses = { SpringComponentScanHelper.class, Application.class, SpringComponentScanHelperAuth.class })
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

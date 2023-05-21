@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "jwt")
-public class JWTConfig {
+public class JWTConfigAuth {
     Integer accessTokenLifespan;
     Integer refreshTokenLifespan;
     String accessTokenSecret;

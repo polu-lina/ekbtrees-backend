@@ -14,7 +14,7 @@ import ru.ekbtreeshelp.core.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceAuth {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;

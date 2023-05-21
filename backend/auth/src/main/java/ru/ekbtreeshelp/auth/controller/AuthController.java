@@ -12,7 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.ekbtreeshelp.auth.constants.CookieNames;
 import ru.ekbtreeshelp.auth.dto.NewUserDto;
 import ru.ekbtreeshelp.auth.service.TokensService;
-import ru.ekbtreeshelp.auth.service.UserService;
+import ru.ekbtreeshelp.auth.service.UserServiceAuth;
 import ru.ekbtreeshelp.auth.utils.CookieUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +25,13 @@ public class AuthController {
 
     private static final Logger LOG = LogManager.getLogger(AuthController.class);
 
-    private final UserService userService;
+    private final UserServiceAuth userServiceAuth;
     private final TokensService tokensService;
 
     @Operation(summary = "Регистрирует нового пользователя")
     @PostMapping(value = "/register")
     public void registerUser(@RequestBody NewUserDto newUserDto) {
-        userService.registerNewUser(newUserDto);
+        userServiceAuth.registerNewUser(newUserDto);
     }
 
     @Operation(summary = "Производит аутентификацию по почте и паролю, " +

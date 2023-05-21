@@ -9,22 +9,9 @@ services:
     depends_on:
       - postgres
       - s3
-      - auth
     ports:
       - "8080:8080"
       - "5005:5005"
-
-  auth:
-    image: donkeyhott/ekbtrees-auth:latest
-    environment:
-      DATASOURCE_URL: "jdbc:postgresql://postgres:5432/ectm"
-      JAVA_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
-      SERVER_PORT: 8085
-    depends_on:
-      - postgres
-    ports:
-      - "8085:8085"
-      - "5006:5006"
 
   postgres:
     image: postgis/postgis:12-3.0-alpine
@@ -50,7 +37,6 @@ services:
       AUTH_PORT: "8085"
     depends_on:
       - api
-      - auth
 
 volumes:
   dbdata:

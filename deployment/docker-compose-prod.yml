@@ -14,26 +14,3 @@ services:
       ACCESS_TOKEN_SECRET: "${ACCESS_TOKEN_SECRET}"
     ports:
       - "8080:8080"
-    depends_on:
-      - auth
-
-  auth:
-    image: donkeyhott/ekbtrees-auth:latest
-    environment:
-      DATASOURCE_URL: "${DATASOURCE_URL}"
-      DATASOURCE_LOGIN: "${DATASOURCE_LOGIN}"
-      DATASOURCE_PASSWORD: "${DATASOURCE_PASSWORD}"
-      DDL_AUTO: "none"
-      VK_APP_ID: "${VK_APP_ID}"
-      VK_APP_SECRET_KEY: "${VK_APP_SECRET_KEY}"
-      FB_APP_ID: "${FB_APP_ID}"
-      FB_APP_SECRET_KEY: "${FB_APP_SECRET_KEY}"
-      BASE_URL: "https://ekb-trees-help.ru"
-      ACCESS_TOKEN_LIFESPAN: "${ACCESS_TOKEN_LIFESPAN}"
-      REFRESH_TOKEN_LIFESPAN: "${REFRESH_TOKEN_LIFESPAN}"
-      ACCESS_TOKEN_SECRET: "${ACCESS_TOKEN_SECRET}"
-      REFRESH_TOKEN_SECRET: "${REFRESH_TOKEN_SECRET}"
-      PASSWORDS_SALT: "${PASSWORDS_SALT}"
-      SUPERUSER_PASSWORD: "${SUPERUSER_PASSWORD}"
-    ports:
-      - "8081:8081"
