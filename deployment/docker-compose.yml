@@ -1,4 +1,5 @@
-version: "3.9"
+name: ekbtrees-backend
+
 services:
   api:
     image: donkeyhott/ekbtrees-api:latest
