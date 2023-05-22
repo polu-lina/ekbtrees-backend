@@ -50,7 +50,7 @@ public class TokensService {
     private JwtDto generateNewTokens(User user) {
         JwtDto jwtDto = jwtService.generateNewPair(user);
 
-        refreshTokenRepository.deleteAllByUser(user);
+        refreshTokenRepository.deleteAllByUserId(user.getId());
 
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(jwtDto.getRefreshToken());

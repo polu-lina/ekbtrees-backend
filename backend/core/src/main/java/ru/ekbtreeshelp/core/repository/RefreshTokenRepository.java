@@ -12,7 +12,7 @@ import java.util.Set;
 @Transactional
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
-    void deleteAllByUser(User user);
+    void deleteAllByUserId(Long userId);
 
     Set<RefreshToken> getAllByUserId(Long userId);
 
