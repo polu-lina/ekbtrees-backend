@@ -13,8 +13,8 @@ abstract class AuthTest extends RestTest {
     @BeforeEach
     void configureRestAssured() {
         requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(authServiceBaseUri)
-                .setPort(authServicePort)
+                .setBaseUri(apiServiceBaseUri)
+                .setPort(apiServicePort)
                 .setContentType(ContentType.JSON)
                 .build()
 

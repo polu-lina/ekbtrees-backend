@@ -71,8 +71,8 @@ class UserControllerTest extends ApiTest {
 
         given()
                 .spec(new RequestSpecBuilder()
-                        .setBaseUri(authServiceBaseUri)
-                        .setPort(authServicePort)
+                        .setBaseUri(apiServiceBaseUri)
+                        .setPort(apiServicePort)
                         .setContentType(ContentType.JSON)
                         .build())
                 .header(HttpHeaders.AUTHORIZATION, "Basic ${getBasicAuthHeader()}")

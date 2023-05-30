@@ -19,8 +19,6 @@ import static io.restassured.RestAssured.given
 abstract class RestTest {
 
     protected static TestContext testContext
-    protected static String authServiceBaseUri
-    protected static int authServicePort
     protected static String apiServiceBaseUri
     protected static int apiServicePort
 
@@ -31,13 +29,9 @@ abstract class RestTest {
     {
         String envApiUri = System.getenv("API_BASE_URI")
         String envApiPort = System.getenv("API_PORT")
-        String envAuthUri = System.getenv("AUTH_BASE_URI")
-        String envAuthPort = System.getenv("AUTH_PORT")
 
         apiServiceBaseUri = envApiUri ?: "http://localhost"
         apiServicePort = envApiPort != null ? Integer.parseInt(envApiPort) : 8080
-        authServiceBaseUri = envAuthUri ?: "http://localhost"
-        authServicePort = envAuthPort != null ? Integer.parseInt(envAuthPort) : 8085
     }
 
     protected static Response get(String path) {
@@ -106,13 +100,13 @@ abstract class RestTest {
 
     protected static void createUser(TestUser user) {
         given()
-                .baseUri("$authServiceBaseUri/auth/register")
-                .port(authServicePort)
+                .baseUri("$apiServiceBaseUri")
+                .port(apiServicePort)
                 .body([email    : user.email,
                        firstName: user.email,
                        lastName : user.email,
                        password : user.password])
-                .post()
+                .post("/auth/register")
                 .then()
                 .statusCode(200)
     }
@@ -128,8 +122,8 @@ abstract class RestTest {
                 testContext.user,
                 { user ->
                     def response = given()
-                            .baseUri(authServiceBaseUri)
-                            .port(authServicePort)
+                            .baseUri(apiServiceBaseUri)
+                            .port(apiServicePort)
                             .header(HttpHeaders.AUTHORIZATION, "Basic " + getBasicAuthHeader())
                             .post("/auth/login")
 
