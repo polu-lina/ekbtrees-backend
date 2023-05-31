@@ -1,12 +1,5 @@
-
-build-api:
-	@./mvnw -T 1C clean install -pl backend/core -am -DskipTests && \
-	 ./mvnw -T 1C clean install -pl backend/auth -am -DskipTests && \
-	 ./mvnw -T 1C clean spring-boot:build-image -pl backend/api -DskipTests
-
 build-backend:
-	@./mvnw -T 1C clean install -pl backend/core -am -DskipTests && \
-	 ./mvnw -T 1C clean install -pl backend/auth -am -DskipTests && \
+	@./mvnw -T 1C clean install -pl backend/core,backend/auth -am -DskipTests && \
 	 ./mvnw -T 1C clean spring-boot:build-image -pl backend/api -DskipTests
 
 build-rest-tests:
